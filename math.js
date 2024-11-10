@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { GAME_PROXIMITY_THRESHOLD } from './constants';
 
 export function translationMatrix(tx, ty, tz) {
     return new THREE.Matrix4().set(
@@ -36,7 +37,7 @@ export function rotationMatrixZ(theta) {
     );
 }
 export function didCollide(ball, plane) {
-    let PROXIMITY_THRESHOLD = 2;
+    let PROXIMITY_THRESHOLD = GAME_PROXIMITY_THRESHOLD;
     if ((Math.abs(ball.position.y - plane.position.y) < PROXIMITY_THRESHOLD && plane.horizontal) || (Math.abs(ball.position.x - plane.position.x) < PROXIMITY_THRESHOLD && plane.horizontal == false)) {
         return plane.horizontal;
     }

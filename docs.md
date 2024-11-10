@@ -4,6 +4,7 @@
 - obstacles.js - data structure for planes
 - plane.js - plane initialization code
 - ball.js - ball initialization code
+- constants.js - fine-tune the gameplay
 
 ## Ball Creation
 Since we are in a zero-gravity environment, the ball needs to start with a velocity
