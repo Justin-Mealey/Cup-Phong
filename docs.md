@@ -1,3 +1,10 @@
+# Files
+- main.js - animation loop, setting up objects
+- math.js - math functions for physics and transformations
+- obstacles.js - data structure for planes
+- plane.js - plane initialization code
+- ball.js - ball initialization code
+
 ## Ball Creation
 Since we are in a zero-gravity environment, the ball needs to start with a velocity
 ```javascript
