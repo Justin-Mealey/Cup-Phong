@@ -52,12 +52,12 @@ scene.add(gameBox);
 
 // Define cup profile
 const points = [
-    new THREE.Vector2(0, 0),        // Bottom center
-    new THREE.Vector2(3, 0),        // Bottom outer edge
-    new THREE.Vector2(3.6, 1.5),    // Slope up to side of cup
-    new THREE.Vector2(3, 4.5),      // Outer side of cup
-    new THREE.Vector2(2.4, 6),      // Inner side near rim
-    new THREE.Vector2(1.8, 6.6)     // Inner lip of the cup
+    new THREE.Vector2(0, 0),        
+    new THREE.Vector2(3, 0),       
+    new THREE.Vector2(3.6, 1.5),    
+    new THREE.Vector2(3, 4.5),      
+    new THREE.Vector2(2.4, 6),      
+    new THREE.Vector2(1.8, 6.6)    
 ];
 
 // Create LatheGeometry by rotating profile
