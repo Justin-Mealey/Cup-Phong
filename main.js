@@ -41,6 +41,32 @@ const b1 = new THREE.Mesh(b1g, b1m);
 scene.add(b1)
 b1.position.set(2, 0, 0)
 
+// Create box game environment
+const boxSize = 50;
+const gameBoxGeometry = new THREE.BoxGeometry(boxSize, boxSize, boxSize);
+// Invert faces by reversing geometry's vertex normals
+gameBoxGeometry.scale(-1, 1, 1);
+const gameBoxMaterial = new THREE.MeshBasicMaterial({ color: 0x0096FF, side: THREE.BackSide, wireframe: true });
+const gameBox = new THREE.Mesh(gameBoxGeometry, gameBoxMaterial);
+scene.add(gameBox);
+
+// Define cup profile
+const points = [
+    new THREE.Vector2(0, 0),        // Bottom center
+    new THREE.Vector2(3, 0),        // Bottom outer edge
+    new THREE.Vector2(3.6, 1.5),    // Slope up to side of cup
+    new THREE.Vector2(3, 4.5),      // Outer side of cup
+    new THREE.Vector2(2.4, 6),      // Inner side near rim
+    new THREE.Vector2(1.8, 6.6)     // Inner lip of the cup
+];
+
+// Create LatheGeometry by rotating profile
+const cupGeometry = new THREE.LatheGeometry(points, 32);
+const cupMaterial = new THREE.MeshBasicMaterial({ color: 0x8b4513 });
+const cup = new THREE.Mesh(cupGeometry, cupMaterial);
+scene.add(cup);
+cup.position.set(0, 3, 0);
+
 
 function animate() {
 	renderer.render( scene, camera );
