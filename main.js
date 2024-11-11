@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { setupStationaryObstacles } from './stationaryObstacles.js';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -24,7 +25,27 @@ const zAxis = createAxisLine(0x0000ff, new THREE.Vector3(0, 0, 0), new THREE.Vec
 scene.add(xAxis);
 scene.add(yAxis);
 scene.add(zAxis);
+//For development, remove later
 
+let obj = setupStationaryObstacles()
+let stationaryObstacles = obj.usedStationaryObstacles
+let floor = obj.floor
+let ceiling = obj.ceiling
+console.log(floor)
+
+let x = [7, 8.5, 11, 13.5, 16, 18.5, 21, 23.5]
+let y = [5, -4, 1, -2, 2, -4, 4, 0]
+for (let i = 0; i < stationaryObstacles.length; i++){
+    let box = stationaryObstacles[i]
+    scene.add(box)
+    box.position.set(x[i], y[i], 0)
+}
+
+scene.add(ceiling)
+ceiling.position.set(15, 8, 0)
+
+scene.add(floor)
+floor.position.set(15, -8, 0)
 
 function animate() {
 
