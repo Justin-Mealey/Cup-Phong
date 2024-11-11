@@ -72,9 +72,19 @@ This should be put in the animation loo
 ## Cup creation
 Define the position of the cup. 
 ```javascript
-const cupOnePosition = new THREE.Vector3(0, 3, 0);
+const cupOnePosition = new THREE.Vector3(5, 0, 0);
 const cupOne = createCup(cupOnePosition);
 scene.add(cupOne);
+```
+
+## Cup plane creation
+A RingGeometry placed at the left (larger radius) end of the cup. Used for collision detection. 
+X-position of plane is x-position of cup -1.5
+* x-position of cup - 1.5 is the exact end of cup, - 1.6 is to avoid visual glitches
+```javascript
+let cupOnePlanePosition = new THREE.Vector3(3.4, 0, 0);
+let cupOnePlane = createCupPlane(0.3, cupOnePlanePosition);
+scene.add(cupOnePlane);
 ```
 
 ## Mouse movement event listeners
