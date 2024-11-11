@@ -5,6 +5,9 @@
 - plane.js - plane initialization code
 - ball.js - ball initialization code
 - constants.js - fine-tune the gameplay
+- gameBox.js - the game box environment
+- cup.js - cup initialization code
+- mouse.js - mouse event listener for click and drag interaction
 
 ## Ball Creation
 Since we are in a zero-gravity environment, the ball needs to start with a velocity
