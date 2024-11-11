@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { setupEventListeners } from './mouse';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -41,32 +42,9 @@ const b1 = new THREE.Mesh(b1g, b1m);
 scene.add(b1)
 b1.position.set(2, 0, 0)
 
-// Create box game environment
-const boxSize = 50;
-const gameBoxGeometry = new THREE.BoxGeometry(boxSize, boxSize, boxSize);
-// Invert faces by reversing geometry's vertex normals
-gameBoxGeometry.scale(-1, 1, 1);
-const gameBoxMaterial = new THREE.MeshBasicMaterial({ color: 0x0096FF, side: THREE.BackSide, wireframe: true });
-const gameBox = new THREE.Mesh(gameBoxGeometry, gameBoxMaterial);
-scene.add(gameBox);
+setupEventListeners();
 
-// Define cup profile
-const points = [
-    new THREE.Vector2(0, 0),        
-    new THREE.Vector2(3, 0),       
-    new THREE.Vector2(3.6, 1.5),    
-    new THREE.Vector2(3, 4.5),      
-    new THREE.Vector2(2.4, 6),      
-    new THREE.Vector2(1.8, 6.6)    
-];
-
-// Create LatheGeometry by rotating profile
-const cupGeometry = new THREE.LatheGeometry(points, 32);
-const cupMaterial = new THREE.MeshBasicMaterial({ color: 0x8b4513 });
-const cup = new THREE.Mesh(cupGeometry, cupMaterial);
-scene.add(cup);
-cup.position.set(0, 3, 0);
-
+controls.enabled = false;
 
 function animate() {
 	renderer.render( scene, camera );
