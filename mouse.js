@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { game_object } from './game_logic.js';
 
 // State variables
 let isDragging = false;
@@ -59,6 +60,7 @@ function handleMouseUp() {
     isDragging = false;
     final_power = power;
     final_angle = Math.atan(-directionVector.y.toFixed(2) / directionVector.x.toFixed(2))
+    game_object.shot_ball = true;
 }
 
 // // Clean up function (call this when removing the functionality)

@@ -1,12 +1,13 @@
 # Files
 - main.js - animation loop, setting up objects
 - math.js - math functions for physics and transformations
-- obstacles.js - data structure for planes
+- game_box.js - data structure for planes
 - plane.js - plane initialization code
 - ball.js - ball initialization code
 - constants.js - fine-tune the gameplay
 - cup.js - cup initialization code
 - mouse.js - mouse event listener for click and drag interaction
+- game_logic.js - keeps track of game variables
 
 ## Ball Creation
 Since we are in a zero-gravity environment, the ball needs to start with a velocity
@@ -18,7 +19,7 @@ const ball = createBall(ballRadius, ballPosition);
 scene.add(ball);
 ```
 
-## Obstacle Creation
+## Game Box Creation
 ```javascript
 const planes = createPlanes(planeData);
 planes.forEach(plane => scene.add(plane));

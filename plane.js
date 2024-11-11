@@ -6,7 +6,7 @@ export function createPlane(transformation) {
     const { x: x_rot, y: y_rot, z: z_rot } = rotation;
     const { x: x_scale, y: y_scale, z: z_scale} = scale;
 
-    const geometry = new THREE.PlaneGeometry(100, 100)
+    const geometry = new THREE.PlaneGeometry(1, 1)
     const material = new THREE.MeshBasicMaterial({
         color: 0x00FF00,
         side: THREE.DoubleSide,
