@@ -41,10 +41,7 @@ function handleMouseMove(event) {
     // Calculate direction vector (opposite to movement)
     const magnitude = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     if (magnitude > 0) {
-        directionVector = {
-            x: -deltaX / magnitude,
-            y: -deltaY / magnitude
-        };
+        directionVector = new THREE.Vector2(-deltaX / magnitude, -deltaY / magnitude);
     }
 
     // // Log values for debugging
@@ -61,7 +58,7 @@ function handleMouseUp() {
 }
 
 // // Clean up function (call this when removing the functionality)
-// export function cleanupEventListeners() {
+// function cleanupEventListeners() {
 //     document.removeEventListener('mousedown', handleMouseDown);
 //     document.removeEventListener('mousemove', handleMouseMove);
 //     document.removeEventListener('mouseup', handleMouseUp);
