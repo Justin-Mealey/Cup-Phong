@@ -14,14 +14,6 @@ document.body.appendChild( renderer.domElement );
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
-const ballGeometry = new THREE.SphereGeometry(1, 64, 64)
-const ballMaterial = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0xFFFFFF),
-})
-const ball = new THREE.Mesh( ballGeometry, ballMaterial );
-scene.add( ball );
-
-//For development, remove later
 function createAxisLine(color, start, end) {
     const geometry = new THREE.BufferGeometry().setFromPoints([start, end]);
     const material = new THREE.LineBasicMaterial({ color: color });
@@ -56,6 +48,8 @@ scene.add(floor)
 floor.position.set(15, -8, 0)
 
 function animate() {
-	renderer.render( scene, camera );
-    controls.update(); 
+
+    // Render the scene
+    renderer.render(scene, camera);
+    controls.update();
 }
