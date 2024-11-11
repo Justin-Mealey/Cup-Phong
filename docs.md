@@ -5,6 +5,9 @@
 - plane.js - plane initialization code
 - ball.js - ball initialization code
 - constants.js - fine-tune the gameplay
+- gameBox.js - the game box environment
+- cup.js - cup initialization code
+- mouse.js - mouse event listener for click and drag interaction
 
 ## Ball Creation
 Since we are in a zero-gravity environment, the ball needs to start with a velocity
@@ -65,4 +68,31 @@ This should be put in the animation loo
             ballVelocity = updateVelocity(ball, ballRadius, ballVelocity, planeData[index], hit_type);
         }
     });
+```
+
+## Cup creation
+Define the position of the cup. 
+```javascript
+const cupOnePosition = new THREE.Vector3(0, 3, 0);
+const cupOne = createCup(cupOnePosition);
+scene.add(cupOne);
+```
+
+## Game Box creation
+Define the side length of the gameBox cube. 
+```javascript
+const gameBox = createGameBox(50);
+scene.add(gameBox);
+```
+
+## Mouse movement event listeners
+The position and power can be displayed through console.log statements, although they are currently commented out. 
+Add event listeners:
+```javascript
+setupEventListeners();
+```
+
+Later, if you want to remove the event listeners:
+```javascript
+cleanupEventListeners();
 ```
