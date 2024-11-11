@@ -75,12 +75,12 @@ export function setupStationaryObstacles(){
     //add 8 boxes to the list we actually use
     const usedStationaryObstacles = stationaryObstacles.filter((_, index) => include[index]);
 
-    const cg = new THREE.BoxGeometry(30, 2, 2);
-    const cm = new THREE.MeshBasicMaterial({ color: 0x0096FF, wireframe: false });
+    const cg = new THREE.BoxGeometry(30, 2, 10);
+    const cm = new THREE.MeshBasicMaterial({ color: 0xaaccb8, wireframe: false });
     const ceiling = new THREE.Mesh(cg, cm);
     
-    const fg = new THREE.BoxGeometry(30, 2, 2);
-    const fm = new THREE.MeshBasicMaterial({ color: 0x0096FF, wireframe: false });
+    const fg = new THREE.BoxGeometry(30, 2, 10);
+    const fm = new THREE.MeshBasicMaterial({ color: 0xaaccb8, wireframe: false });
     const floor = new THREE.Mesh(fg, fm);
 
     return {usedStationaryObstacles, floor, ceiling}
