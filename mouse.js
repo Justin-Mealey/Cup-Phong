@@ -47,12 +47,12 @@ function handleMouseMove(event) {
         };
     }
 
-    // Log values for debugging
-    console.log('Power:', power.toFixed(2));
-    console.log('Direction Vector:', {
-        x: directionVector.x.toFixed(2),
-        y: directionVector.y.toFixed(2)
-    });
+    // // Log values for debugging
+    // console.log('Power:', power.toFixed(2));
+    // console.log('Direction Vector:', {
+    //     x: directionVector.x.toFixed(2),
+    //     y: directionVector.y.toFixed(2)
+    // });
 }
 
 
