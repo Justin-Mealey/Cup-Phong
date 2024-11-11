@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { setupEventListeners } from './mouse';
+import { setupStationaryObstacles } from './stationaryObstacles.js';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -14,14 +14,6 @@ document.body.appendChild( renderer.domElement );
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
-const ballGeometry = new THREE.SphereGeometry(1, 64, 64)
-const ballMaterial = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(0xFFFFFF),
-})
-const ball = new THREE.Mesh( ballGeometry, ballMaterial );
-scene.add( ball );
-
-//For development, remove later
 function createAxisLine(color, start, end) {
     const geometry = new THREE.BufferGeometry().setFromPoints([start, end]);
     const material = new THREE.LineBasicMaterial({ color: color });
@@ -35,18 +27,29 @@ scene.add(yAxis);
 scene.add(zAxis);
 //For development, remove later
 
-const b1g = new THREE.BoxGeometry(4, 0.5, 2); // width = 4, height = 1, depth = 2
-const b1m = new THREE.MeshBasicMaterial({ color: 0x0096FF, wireframe: false });
-const b1 = new THREE.Mesh(b1g, b1m);
+let obj = setupStationaryObstacles()
+let stationaryObstacles = obj.usedStationaryObstacles
+let floor = obj.floor
+let ceiling = obj.ceiling
+console.log(floor)
 
-scene.add(b1)
-b1.position.set(2, 0, 0)
+let x = [7, 8.5, 11, 13.5, 16, 18.5, 21, 23.5]
+let y = [5, -4, 1, -2, 2, -4, 4, 0]
+for (let i = 0; i < stationaryObstacles.length; i++){
+    let box = stationaryObstacles[i]
+    scene.add(box)
+    box.position.set(x[i], y[i], 0)
+}
 
-setupEventListeners();
+scene.add(ceiling)
+ceiling.position.set(15, 8, 0)
 
-controls.enabled = false;
+scene.add(floor)
+floor.position.set(15, -8, 0)
 
 function animate() {
-	renderer.render( scene, camera );
-    controls.update(); 
+
+    // Render the scene
+    renderer.render(scene, camera);
+    controls.update();
 }
