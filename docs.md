@@ -5,7 +5,6 @@
 - plane.js - plane initialization code
 - ball.js - ball initialization code
 - constants.js - fine-tune the gameplay
-- gameBox.js - the game box environment
 - cup.js - cup initialization code
 - mouse.js - mouse event listener for click and drag interaction
 
@@ -76,13 +75,6 @@ Define the position of the cup.
 const cupOnePosition = new THREE.Vector3(0, 3, 0);
 const cupOne = createCup(cupOnePosition);
 scene.add(cupOne);
-```
-
-## Game Box creation
-Define the side length of the gameBox cube. 
-```javascript
-const gameBox = createGameBox(50);
-scene.add(gameBox);
 ```
 
 ## Mouse movement event listeners

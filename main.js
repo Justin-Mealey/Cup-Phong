@@ -35,10 +35,11 @@ console.log(floor)
 
 let x = [7, 8.5, 11, 13.5, 16, 18.5, 21, 23.5]
 let y = [5, -4, 1, -2, 2, -4, 4, 0]
+let z = [0, 1, -1, 0, 2, 1, 0, -1]
 for (let i = 0; i < stationaryObstacles.length; i++){
     let box = stationaryObstacles[i]
     scene.add(box)
-    box.position.set(x[i], y[i], 0)
+    box.position.set(x[i], y[i], z[i])
 }
 
 scene.add(ceiling)
@@ -47,7 +48,15 @@ ceiling.position.set(15, 8, 0)
 scene.add(floor)
 floor.position.set(15, -8, 0)
 
+//setup floor, ceiling
+//setup obstacles
+//setup cups
+//setup ball to be in start
+
+setupEventListeners();
+
 function animate() {
+
 
     // Render the scene
     renderer.render(scene, camera);
