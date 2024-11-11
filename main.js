@@ -1,7 +1,10 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { setupStationaryObstacles } from './stationaryObstacles.js';
-import { setupEventListeners } from './mouse.js';
+import { setupEventListeners, final_power, final_angle} from './mouse.js'
+import { createBall } from './ball.js';
+import { translationMatrix } from './math.js';
+import { GAME_BALL_VELOCITY_SCALING_FACTOR } from './constants.js';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -54,6 +57,20 @@ floor.position.set(15, -8, 0)
 //setup cups
 //setup ball to be in start
 
+function applyTranslation(ball, tx, ty, tz) {
+    const translation = translationMatrix(tx, ty, tz);
+    let model_transform = new THREE.Matrix4(); 
+    model_transform.multiplyMatrices(model_transform, translation) 
+    ball.matrix.copy(model_transform);
+    ball.matrixAutoUpdate = false;
+    ball.position.setFromMatrixPosition(ball.matrix);
+}
+
+const ballRadius = 1;
+let ballPosition = new THREE.Vector3(0, 0, 0);
+const ball = createBall(ballRadius, ballPosition);
+scene.add(ball);
+
 setupEventListeners();
 
 // Camera event listener
@@ -64,6 +81,7 @@ document.addEventListener('keydown', function(event) {
     }
 });
 // Camera event listener
+
 
 function animate() {
     if (cameraInTwoD){
@@ -76,7 +94,23 @@ function animate() {
         camera.position.lerp(newPos, .08)
         camera.lookAt(1,0,0)
     }
+  
+    controls.enabled = false;
+    let ballVelocity = new THREE.Vector3(GAME_BALL_VELOCITY_SCALING_FACTOR * final_power * Math.cos(final_angle), GAME_BALL_VELOCITY_SCALING_FACTOR * final_power * Math.sin(final_angle), 0);
 
+    const tx = ball.position.x + ballVelocity.x;
+    const ty = ball.position.y + ballVelocity.y;
+    const tz = ball.position.z + ballVelocity.z;
+
+    applyTranslation(ball, tx, ty, tz);
+
+    // planeData.forEach((plane, index) => {
+    //     const hit_type = didCollide(ball, planeData[index]);
+    //     if (hit_type !== null) {
+    //         ballVelocity = updateVelocity(ball, ballRadius, ballVelocity, planeData[index], hit_type);
+    //     }
+    // });
+    
     // Render the scene
     renderer.render(scene, camera);
     controls.update();

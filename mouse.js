@@ -5,6 +5,8 @@ let isDragging = false;
 let startX = 0;
 let startY = 0;
 let power = 0;
+export var final_power = 0;
+export var final_angle = 0;
 let directionVector = new THREE.Vector2(0, 0);
 
 // Get window dimensions
@@ -55,6 +57,8 @@ function handleMouseMove(event) {
 
 function handleMouseUp() {
     isDragging = false;
+    final_power = power;
+    final_angle = Math.atan(-directionVector.y.toFixed(2) / directionVector.x.toFixed(2))
 }
 
 // // Clean up function (call this when removing the functionality)
