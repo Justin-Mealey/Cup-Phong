@@ -5,6 +5,8 @@ import { setupEventListeners, final_power, final_angle} from './mouse.js'
 import { createBall } from './ball.js';
 import { translationMatrix } from './math.js';
 import { GAME_BALL_VELOCITY_SCALING_FACTOR } from './constants.js';
+import { checkCollision } from './collisions.js'
+import { getBounds } from './collisions.js'
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -46,6 +48,10 @@ for (let i = 0; i < stationaryObstacles.length; i++){
     scene.add(box)
     box.position.set(x[i], y[i], 0)
 }
+const bounds = getBounds(stationaryObstacles) //USE FOR COLLISION DETECTION
+// bounds[0][0][1] is box 0's x bound, max
+// bounds[4][1][0] is box 4's y bound, min
+// bounds[6][2][0] is box 6's z bound, min
 scene.add(ceiling)
 ceiling.position.set(15, 8, 0)
 scene.add(floor)
@@ -82,7 +88,9 @@ document.addEventListener('keydown', function(event) {
 });
 // Camera event listener
 
-
+console.log(bounds[0][0][0])
+let reflectX = false
+let reflectY = false
 function animate() {
     if (cameraInTwoD){
         let newPos = new THREE.Vector3(0, 0, 20);
@@ -97,6 +105,23 @@ function animate() {
   
     controls.enabled = false;
     let ballVelocity = new THREE.Vector3(GAME_BALL_VELOCITY_SCALING_FACTOR * final_power * Math.cos(final_angle), GAME_BALL_VELOCITY_SCALING_FACTOR * final_power * Math.sin(final_angle), 0);
+
+    // Collision check
+    let collisionCheck = checkCollision(bounds, ball)
+    if (collisionCheck === 'x'){
+        reflectX = !reflectX
+    }
+    else if (collisionCheck === 'y'){
+        reflectY = !reflectY
+    }
+    // Collsion check
+
+    if (reflectX){
+        ballVelocity.x *= -1
+    }
+    else if (reflectY){
+        ballVelocity.y *= -1
+    }
 
     const tx = ball.position.x + ballVelocity.x;
     const ty = ball.position.y + ballVelocity.y;
