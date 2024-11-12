@@ -4,14 +4,14 @@ import { setupStationaryObstacles } from './stationaryObstacles.js';
 import { setupEventListeners, final_power, final_angle} from './mouse.js'
 import { createBall } from './ball.js';
 import { translationMatrix, didCollide, updateVelocity } from './math.js';
-import { GAME_BALL_VELOCITY_SCALING_FACTOR } from './constants.js';
+import { GAME_BALL_VELOCITY_SCALING_FACTOR, GAME_BOUND_X } from './constants.js';
 import { createPlanes } from './plane.js'
 import { planeData } from './game_box.js';
 import { game_object } from './game_logic.js';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-camera.position.set(0,0,20)
+camera.position.set(0,0,30)
 camera.lookAt(0,0,0)
 
 const renderer = new THREE.WebGLRenderer();
@@ -88,9 +88,9 @@ let ballVelocity = new THREE.Vector3(0,0,0)
 
 function animate() {
     if (cameraInTwoD){
-        let newPos = new THREE.Vector3(0, 0, 20);
+        let newPos = new THREE.Vector3(50, 0, 55);
         camera.position.lerp(newPos, .08)
-        camera.lookAt(0,0,0)
+        camera.lookAt(50,0,0)
     }
     else{
         let newPos = new THREE.Vector3(-5, 0, 0);
@@ -116,6 +116,9 @@ function animate() {
                 ballVelocity = updateVelocity(ball, ballRadius, ballVelocity, planeData[index], hit_type);
             }
         });
+        if(ball.position.x >= GAME_BOUND_X) {
+            console.log("you lose")
+        }
     }
     
     // Render the scene
