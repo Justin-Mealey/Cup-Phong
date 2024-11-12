@@ -8,6 +8,7 @@ import { GAME_BALL_VELOCITY_SCALING_FACTOR, GAME_BOUND_X } from './constants.js'
 import { createPlanes } from './plane.js'
 import { planeData } from './game_box.js';
 import { game_object } from './game_logic.js';
+import { createCup, createCupPlane } from './cup.js'
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -82,15 +83,23 @@ document.addEventListener('keydown', function(event) {
       cameraInTwoD = !cameraInTwoD
     }
 });
+
+const cupOnePosition = new THREE.Vector3(GAME_BOUND_X, 0, 0);
+const cupOne = createCup(0.5, cupOnePosition);
+scene.add(cupOne);
+let cupOnePlanePosition = new THREE.Vector3(GAME_BOUND_X - 3, 0, 0);
+let cupOnePlane = createCupPlane(0.5, cupOnePlanePosition);
+scene.add(cupOnePlane);
+
 // Camera event listener
 let setBallVelocity = false;
 let ballVelocity = new THREE.Vector3(0,0,0)
 
 function animate() {
     if (cameraInTwoD){
-        let newPos = new THREE.Vector3(50, 0, 55);
+        let newPos = new THREE.Vector3(75, 0, 75);
         camera.position.lerp(newPos, .08)
-        camera.lookAt(50,0,0)
+        camera.lookAt(75,0,0)
     }
     else{
         let newPos = new THREE.Vector3(-5, 0, 0);
@@ -116,9 +125,15 @@ function animate() {
                 ballVelocity = updateVelocity(ball, ballRadius, ballVelocity, planeData[index], hit_type);
             }
         });
-        if(ball.position.x >= GAME_BOUND_X) {
-            console.log("you lose")
+        if (ball.position.x - ballRadius > cupOnePlanePosition.x && ball.position.y - ballRadius > cupOnePlanePosition.y - 3 && ball.position.y + ballRadius < cupOnePlanePosition.y + 3) {
+            console.log("YOU WON");
+            throw new Error("Game Over")
         }
+        if(ball.position.x >= GAME_BOUND_X) {
+            console.log("YOU LOST")
+            throw new Error("Game Over")
+        }
+        
     }
     
     // Render the scene
