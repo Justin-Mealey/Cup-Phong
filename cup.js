@@ -31,7 +31,7 @@ export function createCupPlane(size, position) {
 
     // Translate to position
     cupPlane.matrix.multiplyMatrices(translationMatrix(position.x, position.y, position.z), cupPlane.matrix);
-
+    cupPlane.visible = false;
     return cupPlane;
 }
 
