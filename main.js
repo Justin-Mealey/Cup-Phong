@@ -9,6 +9,7 @@ import { createPlanes } from './plane.js'
 import { planeData } from './game_box.js';
 import { game_object } from './game_logic.js';
 import { createCup, createCupPlane } from './cup.js'
+import { checkCollision, getBounds } from './collisions.js'
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -44,12 +45,13 @@ let ceiling = obj.ceiling
 
 let x = [7, 8.5, 11, 13.5, 16, 18.5, 21, 23.5]
 let y = [5, -4, 1, -2, 2, -4, 4, 0]
-//let z = [0, 2, -2, 0, 3, -1, 1, -1] ADD LATER when moving to 3D
-// for (let i = 0; i < stationaryObstacles.length; i++){
-//     let box = stationaryObstacles[i]
-//     scene.add(box)
-//     box.position.set(x[i], y[i], 0)
-// }
+let z = [0, 2, -2, 0, 3, -1, 1, -1] //ADD LATER when moving to 3D
+for (let i = 0; i < stationaryObstacles.length; i++){
+    let box = stationaryObstacles[i]
+    scene.add(box)
+    box.position.set(x[i], y[i], 0)
+}
+const bounds = getBounds(stationaryObstacles) //USE FOR COLLISION 
 
 const planes = createPlanes(planeData);
 planes.forEach(plane => scene.add(plane));
@@ -94,12 +96,14 @@ scene.add(cupOnePlane);
 // Camera event listener
 let setBallVelocity = false;
 let ballVelocity = new THREE.Vector3(0,0,0)
+let reflectX = false
+let reflectY = false
 
 function animate() {
     if (cameraInTwoD){
-        let newPos = new THREE.Vector3(75, 0, 75);
+        let newPos = new THREE.Vector3(50, 0, 55);
         camera.position.lerp(newPos, .08)
-        camera.lookAt(75,0,0)
+        camera.lookAt(50,0,0)
     }
     else{
         let newPos = new THREE.Vector3(-5, 0, 0);
@@ -119,21 +123,33 @@ function animate() {
 
         applyTranslation(ball, tx, ty, tz);
 
+        var collisionCheck = checkCollision(bounds, ball)
+        console.log(collisionCheck)
+        if (collisionCheck === 'x'){
+            reflectX = !reflectX
+        }
+        else if (collisionCheck === 'y'){
+            reflectY = !reflectY
+        }
+        // Collsion check
+    
+        if (reflectX){
+            ballVelocity.x *= -1
+            console.log("hit x")
+        }
+        else if (reflectY){
+            ballVelocity.y *= -1
+        }
+
         planeData.forEach((plane, index) => {
             const hit_type = didCollide(ball, planeData[index]);
             if (hit_type !== null) {
                 ballVelocity = updateVelocity(ball, ballRadius, ballVelocity, planeData[index], hit_type);
             }
         });
-        if (ball.position.x - ballRadius > cupOnePlanePosition.x && ball.position.y - ballRadius > cupOnePlanePosition.y - 3 && ball.position.y + ballRadius < cupOnePlanePosition.y + 3) {
-            console.log("YOU WON");
-            throw new Error("Game Over")
-        }
         if(ball.position.x >= GAME_BOUND_X) {
-            console.log("YOU LOST")
-            throw new Error("Game Over")
+            console.log("you lose")
         }
-        
     }
     
     // Render the scene
