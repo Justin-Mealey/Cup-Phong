@@ -124,7 +124,6 @@ function animate() {
         applyTranslation(ball, tx, ty, tz);
 
         var collisionCheck = checkCollision(bounds, ball)
-        console.log(collisionCheck)
         if (collisionCheck === 'x'){
             reflectX = !reflectX
         }
@@ -135,7 +134,6 @@ function animate() {
     
         if (reflectX){
             ballVelocity.x *= -1
-            console.log("hit x")
         }
         else if (reflectY){
             ballVelocity.y *= -1
@@ -147,9 +145,15 @@ function animate() {
                 ballVelocity = updateVelocity(ball, ballRadius, ballVelocity, planeData[index], hit_type);
             }
         });
-        if(ball.position.x >= GAME_BOUND_X) {
-            console.log("you lose")
+        if (ball.position.x - ballRadius > cupOnePlanePosition.x && ball.position.y - ballRadius > cupOnePlanePosition.y - 3 && ball.position.y + ballRadius < cupOnePlanePosition.y + 3) {
+            console.log("YOU WON");
+            throw new Error("Game Over")
         }
+        if(ball.position.x >= GAME_BOUND_X) {
+            console.log("YOU LOST")
+            throw new Error("Game Over")
+        }
+        
     }
     
     // Render the scene
