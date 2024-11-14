@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { setupStationaryObstacles } from './stationaryObstacles.js';
-import { setupEventListeners, final_power, final_angle} from './mouse.js'
+import { setupEventListeners, final_power, final_angle, isDragging, directionVector } from './mouse.js'
 import { createBall } from './ball.js';
 import { translationMatrix, didCollide, updateVelocity } from './math.js';
 import { GAME_BALL_VELOCITY_SCALING_FACTOR, GAME_BOUND_X } from './constants.js';
@@ -10,6 +10,7 @@ import { planeData } from './game_box.js';
 import { game_object } from './game_logic.js';
 import { createCup, createCupPlane } from './cup.js'
 import { checkCollision, getBounds } from './collisions.js'
+import { createAimLine } from './aimIndicator.js';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -99,6 +100,9 @@ let ballVelocity = new THREE.Vector3(0,0,0)
 let reflectX = false
 let reflectY = false
 
+// Aim line
+let aimLine = null;
+
 function animate() {
     if (cameraInTwoD){
         let newPos = new THREE.Vector3(50, 0, 55);
@@ -109,6 +113,26 @@ function animate() {
         let newPos = new THREE.Vector3(-5, 0, 0);
         camera.position.lerp(newPos, .08)
         camera.lookAt(1,0,0)
+    }
+
+        // Aim indicator at the top of animate()
+    if(isDragging) {
+        if(!aimLine) {
+            aimLine = createAimLine();
+            const endPoint = new THREE.Vector3(directionVector.x, -directionVector.y, 0).multiplyScalar(5);
+            aimLine.geometry.setFromPoints([new THREE.Vector3(0, 0, 0), endPoint]);
+            scene.add(aimLine);
+        } else {
+            aimLine.geometry.dispose();
+            aimLine.material.dispose();
+            scene.remove(aimLine);
+            aimLine = null;
+        }
+    }
+
+    if(game_object.shot_ball == true && aimLine != null) {
+        scene.remove(aimLine);
+        aimLine = null;
     }
   
     controls.enabled = false;

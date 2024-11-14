@@ -2,13 +2,13 @@ import * as THREE from 'three';
 import { game_object } from './game_logic.js';
 
 // State variables
-let isDragging = false;
+export let isDragging = false;
 let startX = 0;
 let startY = 0;
 let power = 0;
 export var final_power = 0;
 export var final_angle = 0;
-let directionVector = new THREE.Vector2(0, 0);
+export let directionVector = new THREE.Vector2(0, 0);
 
 // Get window dimensions
 const thirdScreenHeight = window.innerHeight / 3;
