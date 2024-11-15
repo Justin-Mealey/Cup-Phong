@@ -11,6 +11,7 @@ import { game_object } from './game_logic.js';
 import { createCup, createCupPlane } from './cup.js'
 import { checkCollision, getBounds } from './collisions.js'
 import { createAimLine } from './aimIndicator.js';
+import { createText, createLights } from './text.js';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -102,6 +103,15 @@ let reflectY = false
 
 // Aim line
 let aimLine = null;
+
+// Text
+createText("Cup Phong").then((textMesh) => {
+    scene.add(textMesh);
+});
+
+let { directionalLight, ambientLight } = createLights();
+scene.add(directionalLight);
+scene.add(ambientLight);
 
 function animate() {
     if (cameraInTwoD){
