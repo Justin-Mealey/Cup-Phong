@@ -11,7 +11,7 @@ import { game_object } from './game_logic.js';
 import { createCup, createCupPlane } from './cup.js'
 import { checkCollision, getBounds } from './collisions.js'
 import { createAimLine } from './aimIndicator.js';
-import { createText, createLights } from './text.js';
+import { createText, createLights, updateText, wait } from './text.js';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -105,15 +105,31 @@ let reflectY = false
 let aimLine = null;
 
 // Text
+let gameText;
 createText("Cup Phong").then((textMesh) => {
+    gameText = textMesh;
     scene.add(textMesh);
 });
+
+// Game over
+let gameOver = false;
+let gameErr = false;
 
 let { directionalLight, ambientLight } = createLights();
 scene.add(directionalLight);
 scene.add(ambientLight);
 
 function animate() {
+    if(gameOver) {
+        renderer.setAnimationLoop(null);
+        if(!gameErr) {
+            gameErr = true;
+            wait(1).then(() => {
+                throw new Error("Game Over");
+            });
+        }
+    }
+    
     if (cameraInTwoD){
         let newPos = new THREE.Vector3(50, 0, 55);
         camera.position.lerp(newPos, .08)
@@ -179,13 +195,19 @@ function animate() {
                 ballVelocity = updateVelocity(ball, ballRadius, ballVelocity, planeData[index], hit_type);
             }
         });
-        if (ball.position.x - ballRadius > cupOnePlanePosition.x && ball.position.y - ballRadius > cupOnePlanePosition.y - 3 && ball.position.y + ballRadius < cupOnePlanePosition.y + 3) {
+        if (!gameOver && ball.position.x - ballRadius > cupOnePlanePosition.x && ball.position.y - ballRadius > cupOnePlanePosition.y - 3 && ball.position.y + ballRadius < cupOnePlanePosition.y + 3) {
             console.log("YOU WON");
-            throw new Error("Game Over")
+            updateText(gameText, "Game Over, You Won!").then(() => {
+                console.log("Text updated to: Game Over, You Won!");
+            });
+            gameOver = true;
         }
-        if(ball.position.x >= GAME_BOUND_X) {
+        if(!gameOver && ball.position.x >= GAME_BOUND_X) {
             console.log("YOU LOST")
-            throw new Error("Game Over")
+            updateText(gameText, "Game Over, You Lost!").then(() => {
+                console.log("Text updated to: Game Over, You Lost!");
+            });
+            gameOver = true;
         }
         
     }

@@ -46,6 +46,35 @@ export function createText(inputText) {
 
 }
 
+export function updateText(textMesh, newText) {
+    return new Promise((resolve) => {
+        loader.load(fontPath, function (font) {
+            // Create a new TextGeometry with the updated text
+            const newTextGeo = new TextGeometry(newText, {
+                font: font,
+                size: 5,
+                depth: 0.1,
+                curveSegments: 12,
+                bevelEnabled: true,
+                bevelThickness: 1,
+                bevelSize: 0.5,
+                bevelOffset: 0,
+                bevelSegments: 5
+            });
+
+            newTextGeo.computeBoundingBox();
+
+            // Dispose of the old geometry
+            textMesh.geometry.dispose();
+
+            // Assign the new geometry to the existing textMesh
+            textMesh.geometry = newTextGeo;
+
+            resolve(textMesh);
+        });
+    });
+}
+
 export function createLights() {
     // Add lights
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
@@ -55,4 +84,8 @@ export function createLights() {
     const ambientLight = new THREE.AmbientLight(0x404040);  // Soft white light
 
     return { directionalLight, ambientLight };
+}
+
+export function wait(seconds) {
+    return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
 }
