@@ -8,6 +8,7 @@
 - cup.js - cup initialization code
 - mouse.js - mouse event listener for click and drag interaction
 - game_logic.js - keeps track of game variables
+- text.js - text initialization code
 
 ## Ball Creation
 Since we are in a zero-gravity environment, the ball needs to start with a velocity
@@ -98,4 +99,17 @@ setupEventListeners();
 Later, if you want to remove the event listeners:
 ```javascript
 cleanupEventListeners();
+```
+
+## Text creation
+Currently, the font, size, and position of the text are hard-coded. However, they can easily be changed to arguments in createText(). 
+You can also get directionalLight and ambientLight from createLights(), which makes the text look much better. 
+```javascript
+createText("Cup Phong").then((textMesh) => {
+    scene.add(textMesh);
+});
+
+let { directionalLight, ambientLight } = createLights();
+scene.add(directionalLight);
+scene.add(ambientLight);
 ```
