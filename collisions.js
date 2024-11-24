@@ -14,11 +14,25 @@ export function checkCollision(bounds, ball) {
 
         if (ballRight >= xMin && ballLeft <= xMax) {
             if (ballTop >= yMin && ballBottom <= yMax) { // we have a collision
-                if (Math.abs(ballRight - xMin) <= 0.1) { // hit left wall of box
-                    ball.position.x -= 0.1; // TOO MUCH OF AN OVERCORRECTION, ONCE WORKING CHANGE TO LIKE 0.1
+                if (Math.abs(ballRight - xMin) <= 0.2) { // hit left wall of box
+                    ball.position.x -= 0.2; 
                     return 'x';
                 }
-                return 'y';
+                else if (Math.abs(ballLeft - xMax) <= 0.2) { // hit right wall of box
+                    ball.position.x += 0.2; 
+                    return 'x';
+                }
+                else if (Math.abs(ballBottom - yMax) <= 0.2) { // hit top wall of box
+                    ball.position.y += 0.2; 
+                    return 'y';
+                }
+                else if (Math.abs(ballTop - yMin) <= 0.2) { // hit bottom wall of box
+                    ball.position.y -= 0.2; 
+                    return 'y';
+                }
+                else{
+                    console.log("Error: detected collision but none found")
+                }
             }
         }
     }

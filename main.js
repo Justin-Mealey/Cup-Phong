@@ -12,11 +12,12 @@ import { createCup, createCupPlane } from './cup.js'
 import { checkCollision, getBounds } from './collisions.js'
 import { createAimLine } from './aimIndicator.js';
 import { createText, createLights, updateText, wait } from './text.js';
+import { createBackground } from './background.js';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-camera.position.set(0,0,30)
-camera.lookAt(0,0,0)
+camera.position.set(50, 0, 40)
+camera.lookAt(50,0,0)
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
@@ -39,19 +40,25 @@ scene.add(yAxis);
 scene.add(zAxis);
 // For development, remove later
 
+//Add background
+const bg = createBackground()
+scene.add(bg)
+//Add background
+
 // Place stationary obstacles
 let obj = setupStationaryObstacles()
 let stationaryObstacles = obj.usedStationaryObstacles
 let floor = obj.floor
 let ceiling = obj.ceiling
 
-let x = [7, 8.5, 11, 13.5, 16, 18.5, 21, 23.5]
-let y = [5, -4, 1, -2, 2, -4, 4, 0]
+let x = [10, 15, 20, 25, 30, 35, 40, 45]
+let y = [[5, -10, 1, 6, -7, 4, 12, 0], [0, 12, 4, -7, 6, 1, -10, 5], [-4, 8, -6, 6, -10, 10, -14, 0], [-10, -5, 0, 5, 10, 15, 10, 0]]
+let yPicker = Math.floor(Math.random() * 4)
 let z = [0, 2, -2, 0, 3, -1, 1, -1] //ADD LATER when moving to 3D
 for (let i = 0; i < stationaryObstacles.length; i++){
     let box = stationaryObstacles[i]
     scene.add(box)
-    box.position.set(x[i], y[i], 0)
+    box.position.set(x[i], y[yPicker][i], 0)
 }
 const bounds = getBounds(stationaryObstacles) //USE FOR COLLISION 
 
@@ -121,6 +128,9 @@ scene.add(ambientLight);
 
 function animate() {
     if(gameOver) {
+        console.log("HERE")
+        camera.position.set(50, 0, 40)
+        camera.lookAt(50,0,0)
         renderer.setAnimationLoop(null);
         if(!gameErr) {
             gameErr = true;
@@ -129,23 +139,30 @@ function animate() {
             });
         }
     }
-    
-    if (cameraInTwoD){
-        let newPos = new THREE.Vector3(50, 0, 55);
+
+    if (cameraInTwoD && !game_object.shot_ball){
+        let newPos = new THREE.Vector3(50, 0, 40);
         camera.position.lerp(newPos, .08)
         camera.lookAt(50,0,0)
     }
-    else{
+    else if (!cameraInTwoD && !game_object.shot_ball){
         let newPos = new THREE.Vector3(-5, 0, 0);
         camera.position.lerp(newPos, .08)
         camera.lookAt(1,0,0)
     }
+    else if (game_object.shot_ball && !gameOver){
+        camera.position.set(ball.position.x, ball.position.y, ball.position.z)
+        camera.lookAt(ballVelocity.x + ball.position.x, ballVelocity.y + ball.position.y, ballVelocity.z + ball.position.z)
+    }
+    else{
+        console.log("Error: no valid game states, can't set camera.")
+    }
 
-        // Aim indicator at the top of animate()
+    // Aim indicator at the top of animate()
     if(isDragging) {
         if(!aimLine) {
             aimLine = createAimLine();
-            const endPoint = new THREE.Vector3(directionVector.x, -directionVector.y, 0).multiplyScalar(5);
+            const endPoint = new THREE.Vector3(directionVector.x, -directionVector.y, 0).multiplyScalar(9);
             aimLine.geometry.setFromPoints([new THREE.Vector3(0, 0, 0), endPoint]);
             scene.add(aimLine);
         } else {
@@ -167,11 +184,6 @@ function animate() {
         setBallVelocity = true;
     }
     else if(game_object.shot_ball == true && setBallVelocity == true){
-        const tx = ball.position.x + ballVelocity.x;
-        const ty = ball.position.y + ballVelocity.y;
-        const tz = ball.position.z + ballVelocity.z;
-
-        applyTranslation(ball, tx, ty, tz);
 
         var collisionCheck = checkCollision(bounds, ball)
         if (collisionCheck === 'x'){
@@ -184,10 +196,18 @@ function animate() {
     
         if (reflectX){
             ballVelocity.x *= -1
+            reflectX = !reflectX
         }
         else if (reflectY){
             ballVelocity.y *= -1
+            reflectY = !reflectY
         }
+
+        const tx = ball.position.x + ballVelocity.x;
+        const ty = ball.position.y + ballVelocity.y;
+        const tz = ball.position.z + ballVelocity.z;
+
+        applyTranslation(ball, tx, ty, tz);
 
         planeData.forEach((plane, index) => {
             const hit_type = didCollide(ball, planeData[index]);

@@ -37,7 +37,7 @@ export function createText(inputText) {
             textMesh1 = new THREE.Mesh(textGeo, material);
     
             textMesh1.position.x = 30;
-            textMesh1.position.y = 12; 
+            textMesh1.position.y = 20; 
             textMesh1.position.z = -1;
     
             resolve(textMesh1);

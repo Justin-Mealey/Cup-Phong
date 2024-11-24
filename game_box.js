@@ -19,7 +19,7 @@ export const planeData = [
 
     // Top face
     {
-        position: { x: 50, y: 8, z: 0 },
+        position: { x: 50, y: 16, z: 0 },
         rotation: { x: Math.PI / 2, y: 0, z: 0 },
         scale: { x: GAME_BOUND_X, y: 8, z: 1 },
         horizontal: true
@@ -27,7 +27,7 @@ export const planeData = [
 
     // Bottom face
     {
-        position: { x: 50, y: -8, z: 0 },
+        position: { x: 50, y: -16, z: 0 },
         rotation: { x: -Math.PI / 2, y: 0, z: 0 },
         scale: { x: GAME_BOUND_X, y: 8, z: 1 },
         horizontal: true
