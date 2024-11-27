@@ -128,9 +128,6 @@ scene.add(ambientLight);
 
 function animate() {
     if(gameOver) {
-        console.log("HERE")
-        camera.position.set(50, 0, 40)
-        camera.lookAt(50,0,0)
         renderer.setAnimationLoop(null);
         if(!gameErr) {
             gameErr = true;
@@ -138,6 +135,12 @@ function animate() {
                 throw new Error("Game Over");
             });
         }
+    }
+
+    if (game_object.shot_ball){
+        ball.material.transparent = true; 
+        ball.material.opacity = 0.5; 
+        ball.material.needsUpdate = true;
     }
 
     if (cameraInTwoD && !game_object.shot_ball){
@@ -151,8 +154,19 @@ function animate() {
         camera.lookAt(1,0,0)
     }
     else if (game_object.shot_ball && !gameOver){
-        camera.position.set(ball.position.x, ball.position.y, ball.position.z)
+        let temp = new THREE.Vector3()
+        temp.copy(ballVelocity)
+        temp.normalize()
+        let newX = ball.position.x - (4 * temp.x)
+        let newY = ball.position.y - (4 * temp.y)
+        let newZ = ball.position.z - (4 * temp.z)
+        let newPos = new THREE.Vector3(newX, newY, newZ)
+        camera.position.lerp(newPos, .05)
         camera.lookAt(ballVelocity.x + ball.position.x, ballVelocity.y + ball.position.y, ballVelocity.z + ball.position.z)
+    }
+    else if (gameOver){
+        camera.position.set(50, 0, 40)
+        camera.lookAt(50,0,0)
     }
     else{
         console.log("Error: no valid game states, can't set camera.")
