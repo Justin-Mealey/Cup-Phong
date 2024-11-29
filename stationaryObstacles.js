@@ -21,7 +21,7 @@ export function setupStationaryObstacles(){
     const b5m = new THREE.MeshBasicMaterial({ color: 0x000080, wireframe: false });
     const b5 = new THREE.Mesh(b5g, b5m);
 
-    const b6g = new THREE.BoxGeometry(8.25, 1, 2);
+    const b6g = new THREE.BoxGeometry(8, 1, 2);
     const b6m = new THREE.MeshBasicMaterial({ color: 0x000080, wireframe: false });
     const b6 = new THREE.Mesh(b6g, b6m);
 

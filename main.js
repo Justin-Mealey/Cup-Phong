@@ -13,6 +13,7 @@ import { checkCollision, getBounds } from './collisions.js'
 import { createAimLine } from './aimIndicator.js';
 import { createText, createLights, updateText, wait } from './text.js';
 import { createBackground } from './background.js';
+import { createPortals, getPortalBounds, checkTeleport } from './portals.js'
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -51,7 +52,7 @@ let stationaryObstacles = obj.usedStationaryObstacles
 let floor = obj.floor
 let ceiling = obj.ceiling
 
-let x = [10, 15, 20, 25, 30, 35, 40, 45]
+let x = [10, 18, 28, 48, 53, 63, 68, 73]
 let y = [[5, -10, 1, 6, -7, 4, 12, 0], [0, 12, 4, -7, 6, 1, -10, 5], [-4, 8, -6, 6, -10, 10, -14, 0], [-10, -5, 0, 5, 10, 15, 10, 0]]
 let yPicker = Math.floor(Math.random() * 4)
 let z = [0, 2, -2, 0, 3, -1, 1, -1] //ADD LATER when moving to 3D
@@ -62,14 +63,21 @@ for (let i = 0; i < stationaryObstacles.length; i++){
 }
 const bounds = getBounds(stationaryObstacles) //USE FOR COLLISION 
 
+//PORTALS
+let portals = createPortals()
+let xLocations = [23, 42, 35, 58]
+let yLocations = [[-12, 12, 2, 2], [-6, 6, 10, 0], [8, -2, 4, 10]]
+let yPick = Math.floor(Math.random() * 3)
+for (let i = 0; i < portals.length; i++){
+    let portal = portals[i]
+    scene.add(portal)
+    portal.position.set(xLocations[i], yLocations[yPick][i], 0)
+}
+const portalBounds = getPortalBounds(portals)
+//PORTALS
+
 const planes = createPlanes(planeData);
 planes.forEach(plane => scene.add(plane));
-// Place stationary obstacles
-
-//setup floor, ceiling
-//setup obstacles
-//setup cups
-//setup ball to be in start
 
 function applyTranslation(ball, tx, ty, tz) {
     const translation = translationMatrix(tx, ty, tz);
@@ -137,40 +145,44 @@ function animate() {
         }
     }
 
-    if (game_object.shot_ball){
-        ball.material.transparent = true; 
-        ball.material.opacity = 0.5; 
-        ball.material.needsUpdate = true;
-    }
+    //CAMERA
+    {
+        if (game_object.shot_ball){
+            ball.material.transparent = true; 
+            ball.material.opacity = 0.5; 
+            ball.material.needsUpdate = true;
+        }
 
-    if (cameraInTwoD && !game_object.shot_ball){
-        let newPos = new THREE.Vector3(50, 0, 40);
-        camera.position.lerp(newPos, .08)
-        camera.lookAt(50,0,0)
+        if (cameraInTwoD && !game_object.shot_ball){
+            let newPos = new THREE.Vector3(50, 0, 40);
+            camera.position.lerp(newPos, .08)
+            camera.lookAt(50,0,0)
+        }
+        else if (!cameraInTwoD && !game_object.shot_ball){
+            let newPos = new THREE.Vector3(-5, 0, 0);
+            camera.position.lerp(newPos, .08)
+            camera.lookAt(1,0,0)
+        }
+        else if (game_object.shot_ball && !gameOver){
+            let temp = new THREE.Vector3()
+            temp.copy(ballVelocity)
+            temp.normalize()
+            let newX = ball.position.x - (4 * temp.x)
+            let newY = ball.position.y - (4 * temp.y)
+            let newZ = ball.position.z - (4 * temp.z)
+            let newPos = new THREE.Vector3(newX, newY, newZ)
+            camera.position.lerp(newPos, .05)
+            camera.lookAt(ballVelocity.x + ball.position.x, ballVelocity.y + ball.position.y, ballVelocity.z + ball.position.z)
+        }
+        else if (gameOver){
+            camera.position.set(50, 0, 40)
+            camera.lookAt(50,0,0)
+        }
+        else{
+            console.log("Error: no valid game states, can't set camera.")
+        }
     }
-    else if (!cameraInTwoD && !game_object.shot_ball){
-        let newPos = new THREE.Vector3(-5, 0, 0);
-        camera.position.lerp(newPos, .08)
-        camera.lookAt(1,0,0)
-    }
-    else if (game_object.shot_ball && !gameOver){
-        let temp = new THREE.Vector3()
-        temp.copy(ballVelocity)
-        temp.normalize()
-        let newX = ball.position.x - (4 * temp.x)
-        let newY = ball.position.y - (4 * temp.y)
-        let newZ = ball.position.z - (4 * temp.z)
-        let newPos = new THREE.Vector3(newX, newY, newZ)
-        camera.position.lerp(newPos, .05)
-        camera.lookAt(ballVelocity.x + ball.position.x, ballVelocity.y + ball.position.y, ballVelocity.z + ball.position.z)
-    }
-    else if (gameOver){
-        camera.position.set(50, 0, 40)
-        camera.lookAt(50,0,0)
-    }
-    else{
-        console.log("Error: no valid game states, can't set camera.")
-    }
+    //CAMERA
 
     // Aim indicator at the top of animate()
     if(isDragging) {
@@ -198,6 +210,8 @@ function animate() {
         setBallVelocity = true;
     }
     else if(game_object.shot_ball == true && setBallVelocity == true){
+
+        checkTeleport(portalBounds, ball) //will teleport ball to other portal if appropriate
 
         var collisionCheck = checkCollision(bounds, ball)
         if (collisionCheck === 'x'){
