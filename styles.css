@@ -1,109 +1,101 @@
-/* General body styles */
 body {
-    margin: 0;
-    overflow: hidden;
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4; /* Light background for better contrast */
-  }
-  
-/* Canvas styling (for context) */
+  margin: 0;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
 canvas {
-display: block;
+  display: block;
 }
 
 #overlay {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    width: 100px;
-    height: 100px;
-    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    border-radius: 8px;
-    font-size: 14px;
-    z-index: 1; /* Ensures it overlays Three.js canvas */
-    white-space: pre-line; /* This makes newlines render */
-  }
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 100px;
+  height: 100px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 8px;
+  font-size: 14px;
+  z-index: 1;
+  white-space: pre-line;
+}
 
-/* Popup styling */
 #popup, #game-end-popup {
-position: fixed;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
-width: 50vw;
-height: 50vh;
-background-color: rgba(0, 0, 0, 0.8); /* Darker, elevated background */
-display: flex;
-justify-content: center;
-align-items: center;
-opacity: 0;
-pointer-events: none;
-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Elevated shadow */
-}
-#popup.show, #game-end-popup.show {
-opacity: 1;
-pointer-events: all;
-}
-#popup .content, #game-end-popup .content {
-text-align: center;
-color: white;
-font-size: 1.5em;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50vw;
+  height: 50vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* Close button at the bottom middle */
+#popup.show, #game-end-popup.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+#popup .content, #game-end-popup .content {
+  text-align: center;
+  color: white;
+  font-size: 1.5em;
+}
+
 #close-btn {
-position: absolute;
-bottom: 20px;
-left: 50%;
-transform: translateX(-50%);
-background: #d9534f; /* Bootstrap danger color */
-color: white;
-border: none;
-padding: 12px 24px;
-font-size: 1.1em;
-cursor: pointer;
-border-radius: 6px;
-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Button shadow for elevation */
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #d9534f;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1.1em;
+  cursor: pointer;
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 #close-btn:hover {
-background-color: #c9302c;
+  background-color: #c9302c;
 }
 
-/* Question mark button styles */
 #question-btn {
-position: fixed;
-top: 10px;
-right: 10px;
-font-size: 2.5em;
-width: 60px;
-height: 60px;
-display: flex;
-justify-content: center;
-align-items: center;
-border-radius: 50%; /* Rounded circle */
-background-color: white; /* White background */
-color: black; /* Black text */
-border: 3px solid black; /* Black border */
-cursor: pointer;
-z-index: 9999;  /* Ensure it is on top of other content */
-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Elevated shadow */
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  font-size: 2.5em;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: white;
+  color: black;
+  border: 3px solid black;
+  cursor: pointer;
+  z-index: 9999;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 #question-btn:hover {
-background-color: #f8f8f8; /* Light gray background on hover */
+  background-color: #f8f8f8;
 }
 
-#question-btn:active {
-background-color: #e7e7e7; /* Slightly darker gray on click */
-}
-
-/* Question mark button styles */
 #restart-btn {
   position: fixed;
   top: 10px;
@@ -114,27 +106,27 @@ background-color: #e7e7e7; /* Slightly darker gray on click */
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 50%; /* Rounded circle */
-  background-color: white; /* White background */
-  color: black; /* Black text */
-  border: 3px solid black; /* Black border */
+  border-radius: 50%;
+  background-color: white;
+  color: black;
+  border: 3px solid black;
   cursor: pointer;
-  z-index: 9999;  /* Ensure it is on top of other content */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Elevated shadow */
-  }
-  
-  #restart-btn:hover {
-  background-color: #f8f8f8; /* Light gray background on hover */
-  }
-  
-  #restart-btn:active {
-  background-color: #e7e7e7; /* Slightly darker gray on click */
-  }
+  z-index: 9999;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
 
-h3{
-    font-size: 20px;
+#restart-btn:hover {
+  background-color: #f8f8f8;
+}
+
+#restart-btn:active {
+  background-color: #e7e7e7;
+}
+
+h3 {
+  font-size: 20px;
 }
 
 p {
-font-size: 15px;
+  font-size: 15px;
 }
