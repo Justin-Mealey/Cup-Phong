@@ -1,5 +1,6 @@
 import * as THREE from 'three';
-import { game_object } from './game_logic.js';
+import { game_object, game_text } from './game_logic.js';
+import { GAME_MIN_AIM_POWER } from './constants.js';
 
 // State variables
 export let isDragging = false;
@@ -9,6 +10,7 @@ let power = 0;
 export var final_power = 0;
 export var final_angle = 0;
 export let directionVector = new THREE.Vector2(0, 0);
+//TODO: give advice if hasnt shot yet, show ball stats
 
 // Get window dimensions
 const thirdScreenHeight = window.innerHeight / 3;
@@ -40,6 +42,9 @@ function handleMouseMove(event) {
 
     // Update power (capped at 1.0)
     power = Math.min(displacement / thirdScreenHeight, 1.0);
+    if(deltaX > 0){ //DONT ALLOW SHOOTING BACKWARDS
+        return;
+    }
 
     // Calculate direction vector (opposite to movement)
     const magnitude = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
@@ -57,10 +62,16 @@ function handleMouseMove(event) {
 
 
 function handleMouseUp() {
-    isDragging = false;
-    final_power = power;
-    final_angle = Math.atan(-directionVector.y.toFixed(2) / directionVector.x.toFixed(2))
-    game_object.shot_ball = true;
+    if(power > GAME_MIN_AIM_POWER){
+        isDragging = false;
+        final_power = power;
+        final_angle = Math.atan(-directionVector.y.toFixed(2) / directionVector.x.toFixed(2))
+        game_object.shot_ball = true;
+        game_object.cameraInTwoD = false;
+        game_text.info_text = `
+        Power: ${Math.round(final_power * 100, 2) / 100}\n
+        Angle: ${Math.round(final_angle * 100 * (180 / Math.PI), 2) / 100}`;
+    }
 }
 
 // // Clean up function (call this when removing the functionality)
