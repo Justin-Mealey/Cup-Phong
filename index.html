@@ -6,8 +6,58 @@
 		<style>
 			body { margin: 0; }
 		</style>
+		<link rel="stylesheet" href="styles.css">
 	</head>
 	<body>
 		<script type="module" src="/main.js"></script>
+		<div id="overlay">Default Text</div>
+		<button id="restart-btn"><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 50 50">
+			<path d="M 25 2 A 2.0002 2.0002 0 1 0 25 6 C 35.517124 6 44 14.482876 44 25 C 44 35.517124 35.517124 44 25 44 C 14.482876 44 6 35.517124 6 25 C 6 19.524201 8.3080175 14.608106 12 11.144531 L 12 15 A 2.0002 2.0002 0 1 0 16 15 L 16 4 L 5 4 A 2.0002 2.0002 0 1 0 5 8 L 9.5253906 8 C 4.9067015 12.20948 2 18.272325 2 25 C 2 37.678876 12.321124 48 25 48 C 37.678876 48 48 37.678876 48 25 C 48 12.321124 37.678876 2 25 2 z"></path>
+			</svg></button>
+		<button id="question-btn">?</button>
+  
+  
+		<div id="popup">
+			<div class="content">
+				<h2>Welcome to Cup Phong!</h3>
+				<h3>Created by Justin Mealey, Daniel Guo, Brayden Tam</h3>
+			<p>*INSERT HOW TO PLAY*</p>
+			<p>If the ball gets stuck, click reset! (costs one round)</p>
+			<button id="close-btn">Close</button>
+			</div>
+		</div>
+
+		<div id="game-end-popup">
+			<div class="content">
+				<h2>Thanks for playing Cup Phong!</h3>
+				<h3>Created by Justin Mealey, Daniel Guo, Brayden Tam</h3>
+			<p id="game-end-score-text"></p>
+			<p>Hope you had a great time!<br>Refresh the page to play again!</p>
+			</div>
+		</div>
+
+
 	</body>
+	<script type="module">
+		import { updateOverlayText, getScore } from './game_logic.js';
+		import { resetRound } from './main.js';
+		document.getElementById('popup').classList.add('show');
+		document.getElementById('question-btn').onclick = function() {
+		  document.getElementById('popup').classList.add('show');
+		};
+	
+		document.getElementById('close-btn').onclick = function() {
+		  document.getElementById('popup').classList.remove('show');
+		};
+		getScore();
+		updateOverlayText();
+		setInterval(updateOverlayText, 100); // Refresh every second (for demonstration)
+		setInterval(getScore, 100);
+
+		document.getElementById('restart-btn').onclick = function() {
+		  resetRound();
+		};
+	
+
+	  </script>
 </html>

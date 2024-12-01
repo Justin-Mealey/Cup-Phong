@@ -4,16 +4,17 @@ import { setupStationaryObstacles } from './stationaryObstacles.js';
 import { setupEventListeners, final_power, final_angle, isDragging, directionVector } from './mouse.js'
 import { createBall } from './ball.js';
 import { translationMatrix, didCollide, updateVelocity } from './math.js';
-import { GAME_BALL_VELOCITY_SCALING_FACTOR, GAME_BOUND_X } from './constants.js';
+import { GAME_BALL_VELOCITY_SCALING_FACTOR, GAME_BOUND_X, TEXT_HAS_NOT_SHOT } from './constants.js';
 import { createPlanes } from './plane.js'
 import { planeData } from './game_box.js';
-import { game_object  } from './game_logic.js';
+import { game_object, game_text } from './game_logic.js';
 import { createCup, createCupPlane } from './cup.js'
 import { checkCollision, getBounds } from './collisions.js'
 import { createAimLine } from './aimIndicator.js';
 import { createText, createLights, updateText, wait } from './text.js';
 import { createBackground } from './background.js';
 import { createPortals, getPortalBounds, checkTeleport } from './portals.js'
+
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -68,11 +69,11 @@ let portals = createPortals()
 let xLocations = [23, 42, 35, 58]
 let yLocations = [[-12, 12, 2, 2], [-6, 6, 10, 0], [8, -2, 4, 10]]
 let yPick = Math.floor(Math.random() * 3)
-for (let i = 0; i < portals.length; i++){
-    let portal = portals[i]
-    scene.add(portal)
-    portal.position.set(xLocations[i], yLocations[yPick][i], 0)
-}
+// for (let i = 0; i < portals.length; i++){
+//     let portal = portals[i]
+//     scene.add(portal)
+//     portal.position.set(xLocations[i], yLocations[yPick][i], 0)
+// }
 const portalBounds = getPortalBounds(portals)
 //PORTALS
 
@@ -90,13 +91,13 @@ function applyTranslation(ball, tx, ty, tz) {
 
 const ballRadius = 1;
 let ballPosition = new THREE.Vector3(0, 0, 0);
-const ball = createBall(ballRadius, ballPosition);
+var ball = createBall(ballRadius, ballPosition);
 scene.add(ball);
 
 setupEventListeners();
 
 // Camera event listener
-game_object.cameraInTwoD  = true
+game_object.cameraInTwoD = true
 document.addEventListener('keyup', function(event) {
     if (event.key === 'c') {
         if(game_object.cameraInTwoD ) game_object.cameraInTwoD  = false;
@@ -129,23 +130,41 @@ createText("Cup Phong").then((textMesh) => {
 
 // Game over
 let gameOver = false;
-let gameErr = false;
 
 let { directionalLight, ambientLight } = createLights();
 scene.add(directionalLight);
 scene.add(ambientLight);
 
-function animate() {
-    if(gameOver) {
-        renderer.setAnimationLoop(null);
-        if(!gameErr) {
-            gameErr = true;
-            wait(1).then(() => {
-                throw new Error("Game Over");
-            });
-        }
-    }
+game_text.info_text = TEXT_HAS_NOT_SHOT;
 
+// Reset Round
+export function resetRound(){
+    console.log("reset")
+    scene.remove(ball);
+    game_object.shot_ball = false;
+    game_object.cameraInTwoD = true;
+    ball.position.x = 0;
+    ball.position.y = 0;
+    ball.position.z = 0;
+    ballVelocity = new THREE.Vector3(0,0,0)
+    ball = createBall(ballRadius, ballPosition);
+    setBallVelocity = false;
+    reflectX = false
+    reflectY = false
+    aimLine = null;
+    game_object.rounds_left--;
+    scene.add(ball);
+    game_text.info_text = TEXT_HAS_NOT_SHOT;
+    //TODO: generate new obstacles
+    
+}
+
+function animate() {
+    if(game_object.rounds_left == 0){
+        gameOver = true;
+        document.getElementById('game-end-popup').classList.add('show');
+        //TODO: END GAME
+    }
     //MARK: CAMERA ANIMATION
     if (game_object.shot_ball){
         ball.material.transparent = true; 
@@ -214,9 +233,11 @@ function animate() {
         var collisionCheck = checkCollision(bounds, ball)
         if (collisionCheck === 'x'){
             reflectX = !reflectX
+            game_object.score++;
         }
         else if (collisionCheck === 'y'){
             reflectY = !reflectY
+            game_object.score++;
         }
         // Collsion check
     
@@ -243,17 +264,14 @@ function animate() {
         });
         if (!gameOver && ball.position.x - ballRadius > cupOnePlanePosition.x && ball.position.y - ballRadius > cupOnePlanePosition.y - 3 && ball.position.y + ballRadius < cupOnePlanePosition.y + 3) {
             console.log("YOU WON");
-            updateText(gameText, "Game Over, You Won!").then(() => {
-                console.log("Text updated to: Game Over, You Won!");
-            });
-            gameOver = true;
+            game_object.score+=5;
+            updateText(gameText, "HIT :D")
+            resetRound();
         }
-        if(!gameOver && ball.position.x >= GAME_BOUND_X) {
+        if(!gameOver && ball.position.x >= GAME_BOUND_X || ball.position.x < -10) {
             console.log("YOU LOST")
-            updateText(gameText, "Game Over, You Lost!").then(() => {
-                console.log("Text updated to: Game Over, You Lost!");
-            });
-            gameOver = true;
+            updateText(gameText,  "MISSED :(");
+            resetRound();
         }
         
     }
