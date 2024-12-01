@@ -61,6 +61,7 @@ function handleMouseUp() {
     final_power = power;
     final_angle = Math.atan(-directionVector.y.toFixed(2) / directionVector.x.toFixed(2))
     game_object.shot_ball = true;
+    game_object.cameraInTwoD = false;
 }
 
 // // Clean up function (call this when removing the functionality)

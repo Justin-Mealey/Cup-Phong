@@ -7,7 +7,7 @@ import { translationMatrix, didCollide, updateVelocity } from './math.js';
 import { GAME_BALL_VELOCITY_SCALING_FACTOR, GAME_BOUND_X } from './constants.js';
 import { createPlanes } from './plane.js'
 import { planeData } from './game_box.js';
-import { game_object } from './game_logic.js';
+import { game_object  } from './game_logic.js';
 import { createCup, createCupPlane } from './cup.js'
 import { checkCollision, getBounds } from './collisions.js'
 import { createAimLine } from './aimIndicator.js';
@@ -96,10 +96,11 @@ scene.add(ball);
 setupEventListeners();
 
 // Camera event listener
-let cameraInTwoD = true
-document.addEventListener('keydown', function(event) {
+game_object.cameraInTwoD  = true
+document.addEventListener('keyup', function(event) {
     if (event.key === 'c') {
-      cameraInTwoD = !cameraInTwoD
+        if(game_object.cameraInTwoD ) game_object.cameraInTwoD  = false;
+        else game_object.cameraInTwoD  = true;
     }
 });
 
@@ -145,42 +146,39 @@ function animate() {
         }
     }
 
-    //CAMERA
-    {
-        if (game_object.shot_ball){
-            ball.material.transparent = true; 
-            ball.material.opacity = 0.5; 
-            ball.material.needsUpdate = true;
-        }
-
-        if (cameraInTwoD && !game_object.shot_ball){
-            let newPos = new THREE.Vector3(50, 0, 40);
-            camera.position.lerp(newPos, .08)
-            camera.lookAt(50,0,0)
-        }
-        else if (!cameraInTwoD && !game_object.shot_ball){
-            let newPos = new THREE.Vector3(-5, 0, 0);
-            camera.position.lerp(newPos, .08)
-            camera.lookAt(1,0,0)
-        }
-        else if (game_object.shot_ball && !gameOver){
-            let temp = new THREE.Vector3()
-            temp.copy(ballVelocity)
-            temp.normalize()
-            let newX = ball.position.x - (4 * temp.x)
-            let newY = ball.position.y - (4 * temp.y)
-            let newZ = ball.position.z - (4 * temp.z)
-            let newPos = new THREE.Vector3(newX, newY, newZ)
-            camera.position.lerp(newPos, .05)
-            camera.lookAt(ballVelocity.x + ball.position.x, ballVelocity.y + ball.position.y, ballVelocity.z + ball.position.z)
-        }
-        else if (gameOver){
-            camera.position.set(50, 0, 40)
-            camera.lookAt(50,0,0)
-        }
-        else{
-            console.log("Error: no valid game states, can't set camera.")
-        }
+    //MARK: CAMERA ANIMATION
+    if (game_object.shot_ball){
+        ball.material.transparent = true; 
+        ball.material.opacity = 0.5; 
+        ball.material.needsUpdate = true;
+    }
+    if (game_object.cameraInTwoD ){
+        let newPos = new THREE.Vector3(50, 0, 40);
+        camera.position.lerp(newPos, .08)
+        camera.lookAt(50,0,0)
+    }
+    else if (!game_object.cameraInTwoD  && !game_object.shot_ball){
+        let newPos = new THREE.Vector3(-5, 0, 0);
+        camera.position.lerp(newPos, .08)
+        camera.lookAt(1,0,0)
+    }
+    else if (game_object.shot_ball && !gameOver && !game_object.cameraInTwoD ){
+        let temp = new THREE.Vector3()
+        temp.copy(ballVelocity)
+        temp.normalize()
+        let newX = ball.position.x - (4 * temp.x)
+        let newY = ball.position.y - (4 * temp.y)
+        let newZ = ball.position.z - (4 * temp.z)
+        let newPos = new THREE.Vector3(newX, newY, newZ)
+        camera.position.lerp(newPos, .05)
+        camera.lookAt(ballVelocity.x + ball.position.x, ballVelocity.y + ball.position.y, ballVelocity.z + ball.position.z)
+    }
+    else if (gameOver){
+        camera.position.set(50, 0, 40)
+        camera.lookAt(50,0,0)
+    }
+    else{
+        console.log("Error: no valid game states, can't set camera.")
     }
     //CAMERA
 
@@ -260,7 +258,6 @@ function animate() {
         
     }
     
-    // Render the scene
     renderer.render(scene, camera);
     controls.update();
 }
