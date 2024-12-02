@@ -3,7 +3,11 @@ import { rotationMatrixZ, rotationMatrixY, translationMatrix } from './math';
 
 export function createCup(size, position) {
     const geometry = new THREE.CylinderGeometry( 5*size, 3*size, 10*size, 30 , 1, false); 
-    const material = new THREE.MeshBasicMaterial( {color: 0xffff00} ); 
+    const material = new THREE.MeshPhongMaterial({
+        color: 0xffff00,  // Yellow color
+        specular: 0xffffff, // Specular highlights
+        shininess: 90     // Controls the intensity of specular reflection
+      });
     const cylinder = new THREE.Mesh( geometry, material ); 
     
     // Rotate cup around z axis by 90 degrees
