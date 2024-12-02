@@ -9,6 +9,7 @@ let startY = 0;
 let power = 0;
 export var final_power = 0;
 export var final_angle = 0;
+export var update_power = 0;
 export let directionVector = new THREE.Vector2(0, 0);
 //TODO: give advice if hasnt shot yet, show ball stats
 
@@ -42,6 +43,7 @@ function handleMouseMove(event) {
 
     // Update power (capped at 1.0)
     power = Math.min(displacement / thirdScreenHeight, 1.0);
+    update_power = power;
     if(deltaX > 0){ //DONT ALLOW SHOOTING BACKWARDS
         return;
     }
@@ -71,6 +73,8 @@ function handleMouseUp() {
         game_text.info_text = `
         Power: ${Math.round(final_power * 100, 2) / 100}\n
         Angle: ${Math.round(final_angle * 100 * (180 / Math.PI), 2) / 100}`;
+    } else {
+        isDragging = false;
     }
 }
 
