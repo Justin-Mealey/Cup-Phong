@@ -10,7 +10,7 @@ let power = 0;
 export var final_power = 0;
 export var final_angle = 0;
 export var update_power = 0;
-export let directionVector = new THREE.Vector2(0, 0);
+export let directionVector = new THREE.Vector3(0, 0, 0);
 //TODO: give advice if hasnt shot yet, show ball stats
 
 // Get window dimensions
@@ -44,21 +44,29 @@ function handleMouseMove(event) {
     // Update power (capped at 1.0)
     power = Math.min(displacement / thirdScreenHeight, 1.0);
     update_power = power;
-    if(deltaX > 0){ //DONT ALLOW SHOOTING BACKWARDS
+    if(game_object.cameraInTwoD && deltaX > 0){ //DONT ALLOW SHOOTING BACKWARDS
         return;
     }
 
     // Calculate direction vector (opposite to movement)
     const magnitude = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     if (magnitude > 0) {
-        directionVector = new THREE.Vector2(-deltaX / magnitude, -deltaY / magnitude);
+        if(game_object.cameraInTwoD) {
+            directionVector = new THREE.Vector3(-deltaX / magnitude, -deltaY / magnitude, 0);
+        } else {
+            directionVector.z = -deltaX / magnitude;
+        }
+        
     }
 
     // // Log values for debugging
     // console.log('Power:', power.toFixed(2));
     // console.log('Direction Vector:', {
     //     x: directionVector.x.toFixed(2),
-    //     y: directionVector.y.toFixed(2)
+    //     y: directionVector.y.toFixed(2),
+    //     z: directionVector.z.toFixed(2),
+    //     deltaY: -deltaY / magnitude,
+    //     cameraState: game_object.cameraInTwoD
     // });
 }
 

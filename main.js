@@ -96,6 +96,7 @@ let ballPosition = new THREE.Vector3(0, 0, 0);
 var ball = createBall(ballRadius, ballPosition);
 scene.add(ball);
 
+// For mouse 
 setupEventListeners();
 
 // Camera event listener
@@ -214,7 +215,7 @@ function animate() {
     if(isDragging) {
         if(!aimLine) {
             aimLine = createAimLine();
-            const endPoint = new THREE.Vector3(directionVector.x, -directionVector.y, 0).multiplyScalar(9);
+            const endPoint = new THREE.Vector3(directionVector.x, -directionVector.y, directionVector.z).multiplyScalar(9);
             aimLine.geometry.setFromPoints([new THREE.Vector3(0, 0, 0), endPoint]);
             scene.add(aimLine);
         } else {

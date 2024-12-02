@@ -8,9 +8,9 @@ const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffff00 }); // Bright
 
 export function createAimLine() {
     const startPoint = new THREE.Vector3(0, 0, 0);
-    const endPoint = new THREE.Vector3(directionVector.x, directionVector.y, 0).multiplyScalar(5); // Length multiplier for visibility
+    const endPoint = new THREE.Vector3(directionVector.x, -directionVector.y, directionVector.z).multiplyScalar(9); // Length multiplier for visibility
     const lineGeometry = new THREE.BufferGeometry().setFromPoints([startPoint, endPoint]);
     aimLine = new THREE.Line(lineGeometry, lineMaterial);
-    aimLine.scale.set(update_power, update_power, update_power);
+    aimLine.scale.set(update_power, update_power, update_power / 2);
     return aimLine;
 }
