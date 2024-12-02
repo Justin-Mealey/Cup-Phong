@@ -77,11 +77,11 @@ export function updateText(textMesh, newText) {
 
 export function createLights() {
     // Add lights
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
     directionalLight.position.set(1, 1, 1);  // Light from top-right
 
     // Add ambient light to soften shadows
-    const ambientLight = new THREE.AmbientLight(0x404040);  // Soft white light
+    const ambientLight = new THREE.AmbientLight(0x404040, 1.5);  // Soft white light
 
     return { directionalLight, ambientLight };
 }

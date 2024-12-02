@@ -14,6 +14,7 @@ import { createAimLine } from './aimIndicator.js';
 import { createText, createLights, updateText, wait } from './text.js';
 import { createBackground } from './background.js';
 import { createPortals, getPortalBounds, checkTeleport } from './portals.js'
+import { createFireParticleSystem } from './fire.js';
 
 
 //TODO: need to show animation on score/collission
@@ -95,6 +96,7 @@ let ballPosition = new THREE.Vector3(0, 0, 0);
 var ball = createBall(ballRadius, ballPosition);
 scene.add(ball);
 
+// For mouse 
 setupEventListeners();
 
 // Camera event listener
@@ -137,6 +139,13 @@ scene.add(directionalLight);
 scene.add(ambientLight);
 
 game_text.info_text = TEXT_HAS_NOT_SHOT;
+
+// Fire particles
+const fireParticles = createFireParticleSystem();
+// Move the entire fire particle system to a new position
+fireParticles.particleSystem.position.set(10, 0, 0);
+fireParticles.particleSystem.visible = false;
+scene.add(fireParticles.particleSystem);
 
 // Reset Round
 export function resetRound(){
@@ -206,7 +215,7 @@ function animate() {
     if(isDragging) {
         if(!aimLine) {
             aimLine = createAimLine();
-            const endPoint = new THREE.Vector3(directionVector.x, -directionVector.y, 0).multiplyScalar(9);
+            const endPoint = new THREE.Vector3(directionVector.x, -directionVector.y, directionVector.z).multiplyScalar(9);
             aimLine.geometry.setFromPoints([new THREE.Vector3(0, 0, 0), endPoint]);
             scene.add(aimLine);
         } else {
@@ -276,6 +285,9 @@ function animate() {
         }
         
     }
+
+    // Fire
+    fireParticles.animateFireParticles();
     
     renderer.render(scene, camera);
     controls.update();
