@@ -52,26 +52,24 @@ scene.add(bg)
 // Place stationary obstacles
 let obj = setupStationaryObstacles()
 let stationaryObstacles = obj.usedStationaryObstacles
-let floor = obj.floor
-let ceiling = obj.ceiling
 
-let x = [10, 18, 28, 48, 53, 63, 68, 73]
-let y = [[5, -10, 1, 6, -7, 4, 12, 0], [0, 12, 4, -7, 6, 1, -10, 5], [-4, 8, -6, 6, -10, 10, -14, 0], [-10, -5, 0, 5, 10, 15, 10, 0]]
-let yPicker = Math.floor(Math.random() * 4)
-let z = [0, -5, 2, -2, 8, 6, 1, 3] 
+let x = [14, 26, 34, 46, 54, 66, 72, 80]
+let y = [[-8, 0, 8, 12, 8, 0, -8, -12], [-8, 8, 8, -4, -4, 4, 4, 0], [-8, -7, -2, 1, 2, 6, 7, 11], [-10, 3, -4, 0, 3, -7, 10, -2]]
+let z = [[-5, -7.5, -5, 0, 5, 7.5, 5, 0], [8, 8, -6, -6, 4, 4, -2, -2], [-4, 3, -9, 8, -6, 5, -4, 5], [-8, 2, -3, 8, 2, 0, 8, -5]] 
+let levelPicker = Math.floor(Math.random() * 4)
 for (let i = 0; i < stationaryObstacles.length; i++){
     let box = stationaryObstacles[i]
     scene.add(box)
-    box.position.set(x[i], y[yPicker][i], z[i])
+    box.position.set(x[i], y[levelPicker][i], z[levelPicker][i])
 }
 const bounds = getBounds(stationaryObstacles) //USE FOR COLLISION 
 
 //PORTALS
 let portals = createPortals()
-let xLocations = [23, 42, 35, 58]
-let yLocations = [[-12, 12, 2, 2], [-6, 6, 10, 0], [8, -2, 4, 10]]
+let xLocations = [20, 60, 40, 40]
+let yLocations = [[-12, 12, 2, 2], [-6, 6, 10, 10], [8, -2, 0, 0]]
 let yPick = Math.floor(Math.random() * 3)
-let zLocations = [-5, 5, 2, 6]
+let zLocations = [-5, 5, -8, 8]
 for (let i = 0; i < portals.length; i++){
     let portal = portals[i]
     scene.add(portal)
