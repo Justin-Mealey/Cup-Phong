@@ -31,7 +31,7 @@ function handleMouseDown(event) {
 }
 
 function handleMouseMove(event) {
-    if (!isDragging) return;
+    if (!isDragging || !game_object.game_started) return;
 
     const currentX = event.clientX;
     const currentY = event.clientY;
@@ -60,14 +60,14 @@ function handleMouseMove(event) {
     }
 
     // // Log values for debugging
-    // console.log('Power:', power.toFixed(2));
-    // console.log('Direction Vector:', {
-    //     x: directionVector.x.toFixed(2),
-    //     y: directionVector.y.toFixed(2),
-    //     z: directionVector.z.toFixed(2),
-    //     deltaY: -deltaY / magnitude,
-    //     cameraState: game_object.cameraInTwoD
-    // });
+    console.log('Power:', power.toFixed(2));
+    console.log('Direction Vector:', {
+        x: directionVector.x.toFixed(2),
+        y: directionVector.y.toFixed(2),
+        z: directionVector.z.toFixed(2),
+        deltaY: -deltaY / magnitude,
+        cameraState: game_object.cameraInTwoD
+    });
 }
 
 

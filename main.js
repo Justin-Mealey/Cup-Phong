@@ -259,7 +259,7 @@ function animate() {
             ballVelocity.y *= -1
             reflectY = !reflectY
         }
-
+        
         const tx = ball.position.x + ballVelocity.x;
         const ty = ball.position.y + ballVelocity.y;
         const tz = ball.position.z + ballVelocity.z;

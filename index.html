@@ -39,7 +39,7 @@
 
 	</body>
 	<script type="module">
-		import { updateOverlayText, getScore } from './game_logic.js';
+		import { updateOverlayText, getScore, game_object } from './game_logic.js';
 		import { resetRound } from './main.js';
 		document.getElementById('popup').classList.add('show');
 		document.getElementById('question-btn').onclick = function() {
@@ -48,6 +48,7 @@
 	
 		document.getElementById('close-btn').onclick = function() {
 		  document.getElementById('popup').classList.remove('show');
+		  game_object.game_started = true;
 		};
 		getScore();
 		updateOverlayText();

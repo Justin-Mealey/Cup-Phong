@@ -3,6 +3,7 @@ export var game_object = {
     cameraInTwoD: true,
     score: 0,
     rounds_left: 5,
+    game_started: false,
 };
 
 export var game_text = {
