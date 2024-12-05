@@ -27,7 +27,7 @@ canvas {
   white-space: pre-line;
 }
 
-#popup, #game-end-popup {
+#popup {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -41,6 +41,24 @@ canvas {
   opacity: 0;
   pointer-events: none;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+#game-end-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50vw;
+  height: 50vh;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 1.0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  opacity: 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  z-index: 99;
 }
 
 #popup.show, #game-end-popup.show {
