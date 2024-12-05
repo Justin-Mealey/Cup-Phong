@@ -39,9 +39,9 @@ function createAxisLine(color, start, end) {
 const xAxis = createAxisLine(0xff0000, new THREE.Vector3(0, 0, 0), new THREE.Vector3(20, 0, 0)); // Red
 const yAxis = createAxisLine(0x00ff00, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 20, 0)); // Green
 const zAxis = createAxisLine(0x0000ff, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, 20)); // Blue
-scene.add(xAxis);
-scene.add(yAxis);
-scene.add(zAxis);
+// scene.add(xAxis);
+// scene.add(yAxis);
+// scene.add(zAxis);
 // For development, remove later
 
 //Add background
