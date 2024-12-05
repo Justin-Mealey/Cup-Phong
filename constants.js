@@ -3,4 +3,4 @@ export const GAME_BALL_VELOCITY_SCALING_FACTOR = 0.2;
 export const GAME_BOUND_X = 100;
 export const GAME_MIN_AIM_POWER = 0.2;
 
-export const TEXT_HAS_NOT_SHOT = `Drag and Aim to shoot!`;
+export const TEXT_HAS_NOT_SHOT = `GOOD LUCK!`;
