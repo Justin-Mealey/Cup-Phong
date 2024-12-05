@@ -58,11 +58,11 @@ let ceiling = obj.ceiling
 let x = [10, 18, 28, 48, 53, 63, 68, 73]
 let y = [[5, -10, 1, 6, -7, 4, 12, 0], [0, 12, 4, -7, 6, 1, -10, 5], [-4, 8, -6, 6, -10, 10, -14, 0], [-10, -5, 0, 5, 10, 15, 10, 0]]
 let yPicker = Math.floor(Math.random() * 4)
-let z = [0, 2, -2, 0, 3, -1, 1, -1] //ADD LATER when moving to 3D
+let z = [0, -5, 2, -2, 8, 6, 1, 3] 
 for (let i = 0; i < stationaryObstacles.length; i++){
     let box = stationaryObstacles[i]
     scene.add(box)
-    box.position.set(x[i], y[yPicker][i], 0)
+    box.position.set(x[i], y[yPicker][i], z[i])
 }
 const bounds = getBounds(stationaryObstacles) //USE FOR COLLISION 
 
@@ -71,11 +71,12 @@ let portals = createPortals()
 let xLocations = [23, 42, 35, 58]
 let yLocations = [[-12, 12, 2, 2], [-6, 6, 10, 0], [8, -2, 4, 10]]
 let yPick = Math.floor(Math.random() * 3)
-// for (let i = 0; i < portals.length; i++){
-//     let portal = portals[i]
-//     scene.add(portal)
-//     portal.position.set(xLocations[i], yLocations[yPick][i], 0)
-// }
+let zLocations = [-5, 5, 2, 6]
+for (let i = 0; i < portals.length; i++){
+    let portal = portals[i]
+    scene.add(portal)
+    portal.position.set(xLocations[i], yLocations[yPick][i], zLocations[i])
+}
 const portalBounds = getPortalBounds(portals)
 //PORTALS
 
@@ -120,6 +121,7 @@ let setBallVelocity = false;
 let ballVelocity = new THREE.Vector3(0,0,0)
 let reflectX = false
 let reflectY = false
+let reflectZ = false
 
 // Aim line
 let aimLine = null;
@@ -249,6 +251,10 @@ function animate() {
             reflectY = !reflectY
             game_object.score++;
         }
+        else if (collisionCheck === 'z'){
+            reflectZ = !reflectZ
+            game_object.score++;
+        }
         // Collsion check
     
         if (reflectX){
@@ -258,6 +264,10 @@ function animate() {
         else if (reflectY){
             ballVelocity.y *= -1
             reflectY = !reflectY
+        }
+        else if (reflectZ){
+            ballVelocity.z *= -1
+            reflectZ = !reflectZ
         }
 
         const tx = ball.position.x + ballVelocity.x;

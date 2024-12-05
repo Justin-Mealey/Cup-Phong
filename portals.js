@@ -25,6 +25,8 @@ export function checkTeleport(bounds, ball) {
     const ballRight = ball.position.x + ball.radius;
     const ballBottom = ball.position.y - ball.radius;
     const ballTop = ball.position.y + ball.radius;
+    const ballZLeft = ball.position.z - ball.radius;
+    const ballZRight = ball.position.z + ball.radius;
 
     //magenta ones are connected
     let portalA = bounds[0]
@@ -34,27 +36,34 @@ export function checkTeleport(bounds, ball) {
     const xMaxA = portalA[0][1];
     const yMinA = portalA[1][0];
     const yMaxA = portalA[1][1];
-    if (ballRight >= xMinA && ballLeft <= xMaxA) {
-        if (ballTop >= yMinA && ballBottom <= yMaxA) { // we have a collision
-            if (Math.abs(ballRight - xMinA) <= 0.2) { // hit left wall of box, only time we teleport
-                ball.position.x = portalB[0][1]
-                ball.position.y = (portalB[1][0] + portalB[1][1]) / 2
-                return
-            }
+    const zMinA = portalA[2][0];
+    const zMaxA = portalA[2][1];
+    if ( (ballRight >= xMinA && ballLeft <= xMaxA) && 
+         (ballTop >= yMinA && ballBottom <= yMaxA) && 
+         (ballZRight >= zMinA && ballZLeft <= zMaxA)) { //COLLISION DETECTED
+        if (Math.abs(ballRight - xMinA) <= 0.2) { // hit left wall of box, only time we teleport
+            ball.position.x = portalB[0][1]
+            ball.position.y = (portalB[1][0] + portalB[1][1]) / 2
+            ball.position.z = (portalB[2][0] + portalB[2][1]) / 2
+            return
         }
     }
+
 
     const xMinB = portalB[0][0];
     const xMaxB = portalB[0][1];
     const yMinB = portalB[1][0];
     const yMaxB = portalB[1][1];
-    if (ballRight >= xMinB && ballLeft <= xMaxB) {
-        if (ballTop >= yMinB && ballBottom <= yMaxB) { // we have a collision
-            if (Math.abs(ballRight - xMinB) <= 0.2) { // hit left wall of box, only time we teleport
-                ball.position.x = portalA[0][1]
-                ball.position.y = (portalA[1][0] + portalA[1][1]) / 2
-                return
-            }
+    const zMinB = portalB[2][0];
+    const zMaxB = portalB[2][1];
+    if ( (ballRight >= xMinB && ballLeft <= xMaxB) && 
+         (ballTop >= yMinB && ballBottom <= yMaxB) && 
+         (ballZRight >= zMinB && ballZLeft <= zMaxB)) { //COLLISION DETECTED
+        if (Math.abs(ballRight - xMinB) <= 0.2) { // hit left wall of box, only time we teleport
+            ball.position.x = portalA[0][1]
+            ball.position.y = (portalA[1][0] + portalA[1][1]) / 2
+            ball.position.z = (portalA[2][0] + portalA[2][1]) / 2
+            return
         }
     }
 
@@ -66,13 +75,16 @@ export function checkTeleport(bounds, ball) {
     const xMaxC = portalC[0][1];
     const yMinC = portalC[1][0];
     const yMaxC = portalC[1][1];
-    if (ballRight >= xMinC && ballLeft <= xMaxC) {
-        if (ballTop >= yMinC && ballBottom <= yMaxC) { // we have a collision
-            if (Math.abs(ballRight - xMinC) <= 0.2) { // hit left wall of box, only time we teleport
-                ball.position.x = portalD[0][1]
-                ball.position.y = (portalD[1][0] + portalD[1][1]) / 2
-                return
-            }
+    const zMinC = portalC[2][0];
+    const zMaxC = portalC[2][1];
+    if ( (ballRight >= xMinC && ballLeft <= xMaxC) && 
+         (ballTop >= yMinC && ballBottom <= yMaxC) && 
+         (ballZRight >= zMinC && ballZLeft <= zMaxC)) { //COLLISION DETECTED
+        if (Math.abs(ballRight - xMinC) <= 0.2) { // hit left wall of box, only time we teleport
+            ball.position.x = portalD[0][1]
+            ball.position.y = (portalD[1][0] + portalD[1][1]) / 2
+            ball.position.z = (portalD[2][0] + portalD[2][1]) / 2
+            return
         }
     }
 
@@ -80,15 +92,19 @@ export function checkTeleport(bounds, ball) {
     const xMaxD = portalD[0][1];
     const yMinD = portalD[1][0];
     const yMaxD = portalD[1][1];
-    if (ballRight >= xMinD && ballLeft <= xMaxD) {
-        if (ballTop >= yMinD && ballBottom <= yMaxD) { // we have a collision
-            if (Math.abs(ballRight - xMinD) <= 0.2) { // hit left wall of box, only time we teleport
-                ball.position.x = portalC[0][1]
-                ball.position.y = (portalC[1][0] + portalC[1][1]) / 2
-                return
-            }
+    const zMinD = portalD[2][0];
+    const zMaxD = portalD[2][1];
+    if ( (ballRight >= xMinD && ballLeft <= xMaxD) && 
+         (ballTop >= yMinD && ballBottom <= yMaxD) && 
+         (ballZRight >= zMinD && ballZLeft <= zMaxD)) { //COLLISION DETECTED
+        if (Math.abs(ballRight - xMinD) <= 0.2) { // hit left wall of box, only time we teleport
+            ball.position.x = portalC[0][1]
+            ball.position.y = (portalC[1][0] + portalC[1][1]) / 2
+            ball.position.z = (portalC[2][0] + portalC[2][1]) / 2
+            return
         }
     }
+    
     return
 }
 
