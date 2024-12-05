@@ -11,10 +11,11 @@ export function createPlane(transformation) {
         color: 0x00FF00,
         side: THREE.DoubleSide,
         transparent: true,
-        opacity: 0.5,
+        opacity: 0.6,
     });
 
     const plane = new THREE.Mesh(geometry, material);
+    plane.horizontal = horizontal;
 
     plane.position.set(x_pos, y_pos, z_pos);
     plane.rotation.set(x_rot, y_rot, z_rot);

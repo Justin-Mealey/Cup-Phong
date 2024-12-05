@@ -223,6 +223,14 @@ function animate() {
     else{
         console.log("Error: no valid game states, can't set camera.")
     }
+    planes.forEach(plane => {
+        if (!plane.horizontal && !game_object.cameraInTwoD) {
+            plane.material.opacity = 0.6;
+        }
+        if (!plane.horizontal && game_object.cameraInTwoD) {
+            plane.material.opacity = 0.2;
+        }
+    });
     //CAMERA
 
     // Aim indicator at the top of animate()
