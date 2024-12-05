@@ -59,15 +59,15 @@ function handleMouseMove(event) {
         
     }
 
-    // // Log values for debugging
-    console.log('Power:', power.toFixed(2));
-    console.log('Direction Vector:', {
-        x: directionVector.x.toFixed(2),
-        y: directionVector.y.toFixed(2),
-        z: directionVector.z.toFixed(2),
-        deltaY: -deltaY / magnitude,
-        cameraState: game_object.cameraInTwoD
-    });
+    // // // Log values for debugging
+    // console.log('Power:', power.toFixed(2));
+    // console.log('Direction Vector:', {
+    //     x: directionVector.x.toFixed(2),
+    //     y: directionVector.y.toFixed(2),
+    //     z: directionVector.z.toFixed(2),
+    //     deltaY: -deltaY / magnitude,
+    //     cameraState: game_object.cameraInTwoD
+    // });
 }
 
 
