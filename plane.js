@@ -8,7 +8,7 @@ export function createPlane(transformation) {
 
     const geometry = new THREE.PlaneGeometry(1, 1)
     const material = new THREE.MeshBasicMaterial({
-        color: 0x00FF00,
+        color: 0xFFFFFF,
         side: THREE.DoubleSide,
         transparent: true,
         opacity: 0.6,

@@ -155,9 +155,7 @@ scene.add(ambientLight);
 game_text.info_text = TEXT_HAS_NOT_SHOT;
 
 // Fire particles
-const fireParticles = createFireParticleSystem();
-// Move the entire fire particle system to a new position
-fireParticles.particleSystem.position.set(10, 0, 0);
+const fireParticles = createFireParticleSystem(ball);
 fireParticles.particleSystem.visible = false;
 scene.add(fireParticles.particleSystem);
 
@@ -298,6 +296,11 @@ function animate() {
             const hit_type = didCollide(ball, planeData[index]);
             if (hit_type !== null) {
                 ballVelocity = updateVelocity(ball, ballRadius, ballVelocity, planeData[index], hit_type);
+                const renderedPlane = planes[index];
+                renderedPlane.material.color.set(0x00FF00);
+                setTimeout(() => {
+                    renderedPlane.material.color.set(0xFFFFFF);
+                }, 500);
             }
         });
         if (!gameOver) {
