@@ -102,7 +102,7 @@ setupEventListeners();
 // Camera event listener
 game_object.cameraInTwoD = true
 document.addEventListener('keyup', function(event) {
-    if (event.key === 'c') {
+    if (event.key === 'c' && game_object.shot_ball) {
         if(game_object.cameraInTwoD ) game_object.cameraInTwoD  = false;
         else game_object.cameraInTwoD  = true;
     }
@@ -167,6 +167,7 @@ export function resetRound(){
     scene.remove(ball);
     game_object.shot_ball = false;
     game_object.cameraInTwoD = true;
+    game_object.set_xy_shot = false;
     ball.position.x = 0;
     ball.position.y = 0;
     ball.position.z = 0;
@@ -190,10 +191,13 @@ function animate() {
         //TODO: END GAME
     }
     //MARK: CAMERA ANIMATION
-    if (game_object.shot_ball){
+    if ((game_object.shot_ball || game_object.set_xy_shot) && !game_object.cameraInTwoD){
         ball.material.transparent = true; 
-        ball.material.opacity = 0.5; 
+        ball.material.opacity = 0.3; 
         ball.material.needsUpdate = true;
+    }
+    else{
+        ball.material.opacity = 1.0; 
     }
     if (game_object.cameraInTwoD ){
         let newPos = new THREE.Vector3(50, 0, 40);
@@ -201,6 +205,8 @@ function animate() {
         camera.lookAt(50,0,0)
     }
     else if (!game_object.cameraInTwoD  && !game_object.shot_ball){
+        ball.material.needsUpdate = true;
+        ball.material.transparent = true; 
         let newPos = new THREE.Vector3(-5, 0, 0);
         camera.position.lerp(newPos, .08)
         camera.lookAt(1,0,0)
@@ -255,7 +261,7 @@ function animate() {
   
     controls.enabled = false;
     if(game_object.shot_ball == true && setBallVelocity == false){
-        ballVelocity.set(GAME_BALL_VELOCITY_SCALING_FACTOR * final_power * Math.cos(final_angle), GAME_BALL_VELOCITY_SCALING_FACTOR * final_power * Math.sin(final_angle), 0);
+        ballVelocity.set(GAME_BALL_VELOCITY_SCALING_FACTOR * final_power * Math.cos(final_angle), GAME_BALL_VELOCITY_SCALING_FACTOR * final_power * Math.sin(final_angle), GAME_BALL_VELOCITY_SCALING_FACTOR * final_power * directionVector.z);
         setBallVelocity = true;
     }
     else if(game_object.shot_ball == true && setBallVelocity == true){

@@ -1,4 +1,5 @@
 export var game_object = {
+    set_xy_shot: false,
     shot_ball: false,
     cameraInTwoD: true,
     score: 0,
