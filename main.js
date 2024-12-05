@@ -115,6 +115,20 @@ let cupOnePlanePosition = new THREE.Vector3(GAME_BOUND_X - 3, 0, 0);
 let cupOnePlane = createCupPlane(0.5, cupOnePlanePosition);
 scene.add(cupOnePlane);
 
+const cupTwoPosition = new THREE.Vector3(GAME_BOUND_X, 6, 0);
+const cupTwo = createCup(0.5, cupTwoPosition);
+scene.add(cupTwo);
+let cupTwoPlanePosition = new THREE.Vector3(GAME_BOUND_X - 3, 6, 0);
+let cupTwoPlane = createCupPlane(0.5, cupTwoPlanePosition);
+scene.add(cupTwoPlane);
+
+const cupThreePosition = new THREE.Vector3(GAME_BOUND_X, -6, 0);
+const cupThree = createCup(0.5, cupThreePosition);
+scene.add(cupThree);
+let cupThreePlanePosition = new THREE.Vector3(GAME_BOUND_X - 3, -6, 0);
+let cupThreePlane = createCupPlane(0.5, cupThreePlanePosition);
+scene.add(cupThreePlane);
+
 // Camera event listener
 let setBallVelocity = false;
 let ballVelocity = new THREE.Vector3(0,0,0)
@@ -272,11 +286,16 @@ function animate() {
                 ballVelocity = updateVelocity(ball, ballRadius, ballVelocity, planeData[index], hit_type);
             }
         });
-        if (!gameOver && ball.position.x - ballRadius > cupOnePlanePosition.x && ball.position.y - ballRadius > cupOnePlanePosition.y - 3 && ball.position.y + ballRadius < cupOnePlanePosition.y + 3) {
-            console.log("YOU WON");
-            game_object.score+=5;
-            updateText(gameText, "HIT :D")
-            resetRound();
+        if (!gameOver) {
+            let hitFirstCup = ball.position.x - ballRadius > cupOnePlanePosition.x && ball.position.y - ballRadius > cupOnePlanePosition.y - 3 && ball.position.y + ballRadius < cupOnePlanePosition.y + 3;
+            let hitSecondCup = ball.position.x - ballRadius > cupTwoPlanePosition.x && ball.position.y - ballRadius > cupTwoPlanePosition.y - 3 && ball.position.y + ballRadius < cupTwoPlanePosition.y + 3;
+            let hitThirdCup = ball.position.x - ballRadius > cupThreePlanePosition.x && ball.position.y - ballRadius > cupThreePlanePosition.y - 3 && ball.position.y + ballRadius < cupThreePlanePosition.y + 3;
+            if(hitFirstCup || hitSecondCup || hitThirdCup) {
+                console.log("YOU WON");
+                game_object.score+=5;
+                updateText(gameText, "HIT :D")
+                resetRound();
+            }
         }
         if(!gameOver && ball.position.x >= GAME_BOUND_X || ball.position.x < -10) {
             console.log("YOU LOST")
