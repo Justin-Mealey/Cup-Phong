@@ -254,15 +254,18 @@ function animate() {
     }
     if (game_object.cameraInTwoD ){
         let newPos = new THREE.Vector3(50, 0, 40);
-        camera.position.lerp(newPos, .08)
-        camera.lookAt(50,0,0)
+        camera.position.lerp(newPos, .08);
+        camera.lookAt(50,0,0);
     }
     else if (!game_object.cameraInTwoD  && !game_object.shot_ball){
         ball.material.needsUpdate = true;
         ball.material.transparent = true; 
         let newPos = new THREE.Vector3(-3, 0, 0);
-        camera.position.lerp(newPos, .08)
-        camera.lookAt(1,0,0)
+        camera.position.lerp(newPos, .08);
+        camera.lookAt(1,0,0);
+        ball.material.transparent = true; 
+        ball.material.opacity = 0.3; 
+        ball.material.needsUpdate = true;
     }
     else if (game_object.shot_ball && !gameOver && !game_object.cameraInTwoD ){
         let temp = new THREE.Vector3()
