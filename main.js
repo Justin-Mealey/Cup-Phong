@@ -155,6 +155,13 @@ let gameOver = false;
 let { directionalLight, ambientLight } = createLights();
 scene.add(directionalLight);
 scene.add(ambientLight);
+const l3 = new THREE.DirectionalLight(0xffffff, 1);
+l3.position.set(0, 10, 10);
+l3.target.position.set(50, 0, 0);
+scene.add(l3.target); 
+
+scene.add(l3)
+
 
 game_text.info_text = TEXT_HAS_NOT_SHOT;
 
