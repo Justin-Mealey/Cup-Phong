@@ -167,8 +167,12 @@ game_text.info_text = TEXT_HAS_NOT_SHOT;
 
 // Fire particles
 const fireParticles = createFireParticleSystem(ball);
+fireParticles.particleSystem.position.set(GAME_BOUND_X - 3, 0, 0);
+fireParticles.particleSystem.scale.set(10, 5, 5);
+fireParticles.particleSystem.rotateZ(Math.PI/2);
 fireParticles.particleSystem.visible = false;
 scene.add(fireParticles.particleSystem);
+let fireVisibleStartTime = null;
 
 // Reset Round
 export function resetRound(){
@@ -378,6 +382,18 @@ function animate() {
             let hitSecondCup = ball.position.x - ballRadius > cupTwoPlanePosition.x && ball.position.y - ballRadius > cupTwoPlanePosition.y - 3 && ball.position.y + ballRadius < cupTwoPlanePosition.y + 3;
             let hitThirdCup = ball.position.x - ballRadius > cupThreePlanePosition.x && ball.position.y - ballRadius > cupThreePlanePosition.y - 3 && ball.position.y + ballRadius < cupThreePlanePosition.y + 3;
             if(hitFirstCup || hitSecondCup || hitThirdCup) {
+                if(hitFirstCup) {
+                    fireParticles.particleSystem.position.y = 0;
+                    fireParticles.particleSystem.position.z = 0;
+                } else if (hitSecondCup) {
+                    fireParticles.particleSystem.position.y = 10;
+                    fireParticles.particleSystem.position.z = -2;
+                } else {
+                    fireParticles.particleSystem.position.y = -10;
+                    fireParticles.particleSystem.position.z = 2;
+                }
+                fireParticles.particleSystem.visible = true;
+
                 console.log("YOU WON");
                 game_object.score+=5;
                 updateText(gameText, "HIT :D")
@@ -395,9 +411,38 @@ function animate() {
         }
     }
 
-    // Fire
-    fireParticles.animateFireParticles();
+
+    // if (fireParticles.particleSystem.visible) {
+    //     if (!fireVisibleStartTime) {
+    //         fireVisibleStartTime = Date.now(); // Record the start time
+    //     }
+
+    //     const elapsedTime = Date.now() - fireVisibleStartTime;
+
+    //     if (elapsedTime > 1000) { // 1000 ms = 1 second
+    //         fireParticles.particleSystem.visible = false;
+    //         fireVisibleStartTime = null; // Reset the timer
+    //     }
+    // }
     
+    if (fireParticles.particleSystem.visible) {
+        if (!fireVisibleStartTime) {
+            fireVisibleStartTime = performance.now(); // Record the start time
+        }
+
+        const elapsedTime = performance.now() - fireVisibleStartTime;
+
+        if (elapsedTime > 3000) { // 1000 ms = 1 second
+            fireParticles.particleSystem.visible = false;
+            fireVisibleStartTime = null; // Reset the timer
+        }
+    }
+
+
+
+
+    fireParticles.animateFireParticles();
+
     renderer.render(scene, camera);
     controls.update();
 }
