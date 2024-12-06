@@ -161,6 +161,7 @@ border-radius: 8px;
 font-size: 20px;
 text-align: center;
 animation: bounce 1.5s infinite;
+white-space: pre-line;
 }
 
 @keyframes bounce {

@@ -30,7 +30,7 @@ function handleMouseDown(event) {
 }
 
 function handleMouseMove(event) {
-    if (!isDragging || !game_object.game_started) return;
+    if (!isDragging || !game_object.game_started || (!game_object.cameraInTwoD && !game_object.set_xy_shot) || (game_object.cameraInTwoD && game_object.set_xy_shot)) return;
 
     const currentX = event.clientX;
     const currentY = event.clientY;
@@ -83,7 +83,7 @@ function handleMouseUp() {
             Power: ${Math.round(final_power * 100, 2) / 100}
             XY Angle: ${Math.round(final_angle * 100 * (180 / Math.PI), 2) / 100}`;
         }
-        else if(game_object.set_xy_shot){
+        else if(game_object.set_xy_shot && !game_object.cameraInTwoD){
             game_text.info_text = `
             Power: ${Math.round(final_power * 100, 2) / 100}
             XY-Angle: ${Math.round(final_angle * 100 * (180 / Math.PI), 2) / 100}
