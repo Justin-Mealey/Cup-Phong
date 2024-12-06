@@ -9,10 +9,10 @@ const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffff00 }); // Bright
 
 export function createAimLine() {
     const startPoint = new THREE.Vector3(0, 0, 0);
-    let endPoint = new THREE.Vector3(directionVector.x, -directionVector.y, directionVector.z).multiplyScalar(9); // Length multiplier for visibility
+    let endPoint = new THREE.Vector3(directionVector.x, -directionVector.y, directionVector.z); // Length multiplier for visibility
     // For picking z-direction: 
     if(!game_object.cameraInTwoD) {
-        endPoint = new THREE.Vector3(0, 0, directionVector.z).multiplyScalar(9);
+        endPoint = new THREE.Vector3(0, 0, directionVector.z);
     }
     const lineGeometry = new THREE.BufferGeometry().setFromPoints([startPoint, endPoint]);
     aimLine = new THREE.Line(lineGeometry, lineMaterial);

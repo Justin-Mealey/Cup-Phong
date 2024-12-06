@@ -62,7 +62,7 @@ for (let i = 0; i < stationaryObstacles.length; i++){
     scene.add(box)
     box.position.set(x[i], y[levelPicker][i], z[levelPicker][i])
 }
-const bounds = getBounds(stationaryObstacles) //USE FOR COLLISION 
+let bounds = getBounds(stationaryObstacles) //USE FOR COLLISION 
 
 //PORTALS
 let portals = createPortals()
@@ -178,8 +178,46 @@ export function resetRound(){
     game_object.rounds_left--;
     scene.add(ball);
     game_text.info_text = TEXT_HAS_NOT_SHOT;
-    //TODO: generate new obstacles
-    
+    //NO NEW OBSTACLES IF RESET BUTTON HIT
+}
+function resetRoundWithNewObstacles(){
+    scene.remove(ball);
+    game_object.shot_ball = false;
+    game_object.cameraInTwoD = true;
+    game_object.set_xy_shot = false;
+    ball.position.x = 0;
+    ball.position.y = 0;
+    ball.position.z = 0;
+    ballVelocity = new THREE.Vector3(0,0,0)
+    ball = createBall(ballRadius, ballPosition);
+    setBallVelocity = false;
+    reflectX = false
+    reflectY = false
+    aimLine = null;
+    game_object.rounds_left--;
+    scene.add(ball);
+    game_text.info_text = TEXT_HAS_NOT_SHOT;
+
+    //GET NEW OBSTACLES
+    for (let i = 0; i < stationaryObstacles.length; i++){ //remove old obstacles
+        let box = stationaryObstacles[i]
+        scene.remove(box)
+    }
+
+    let obj = setupStationaryObstacles()
+    let newstationaryObstacles = obj.usedStationaryObstacles
+
+    let x = [14, 26, 34, 46, 54, 66, 72, 80]
+    let y = [[-8, 0, 8, 12, 8, 0, -8, -12], [-8, 8, 8, -4, -4, 4, 4, 0], [-8, -7, -2, 1, 2, 6, 7, 11], [-10, 3, -4, 0, 3, -7, 10, -2]]
+    let z = [[-5, -7.5, -5, 0, 5, 7.5, 5, 0], [8, 8, -6, -6, 4, 4, -2, -2], [-4, 3, -9, 8, -6, 5, -4, 5], [-8, 2, -3, 8, 2, 0, 8, -5]] 
+    let levelPicker = Math.floor(Math.random() * 4)
+    for (let i = 0; i < newstationaryObstacles.length; i++){
+        let box = newstationaryObstacles[i]
+        scene.add(box)
+        box.position.set(x[i], y[levelPicker][i], z[levelPicker][i])
+    }
+    let bounds = getBounds(newstationaryObstacles) //USE FOR COLLISION
+    return {bounds, newstationaryObstacles}
 }
 
 function animate() {
@@ -205,7 +243,7 @@ function animate() {
     else if (!game_object.cameraInTwoD  && !game_object.shot_ball){
         ball.material.needsUpdate = true;
         ball.material.transparent = true; 
-        let newPos = new THREE.Vector3(-5, 0, 0);
+        let newPos = new THREE.Vector3(-3, 0, 0);
         camera.position.lerp(newPos, .08)
         camera.lookAt(1,0,0)
     }
@@ -319,15 +357,18 @@ function animate() {
                 console.log("YOU WON");
                 game_object.score+=5;
                 updateText(gameText, "HIT :D")
-                resetRound();
+                let obj = resetRoundWithNewObstacles();
+                bounds = obj.bounds
+                stationaryObstacles = obj.newstationaryObstacles
             }
         }
         if(!gameOver && ball.position.x >= GAME_BOUND_X || ball.position.x < -10) {
             console.log("YOU LOST")
             updateText(gameText,  "MISSED :(");
-            resetRound();
+            let obj = resetRoundWithNewObstacles();
+            bounds = obj.bounds
+            stationaryObstacles = obj.newstationaryObstacles
         }
-        
     }
 
     // Fire
