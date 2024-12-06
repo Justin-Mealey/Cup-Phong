@@ -56,7 +56,7 @@ let stationaryObstacles = obj.usedStationaryObstacles
 
 let x = [14, 26, 34, 46, 54, 66, 72, 80]
 let y = [[-8, 0, 8, 12, 8, 0, -8, -12], [-8, 8, 8, -4, -4, 4, 4, 0], [-8, -7, -2, 1, 2, 6, 7, 11], [-10, 3, -4, 0, 3, -7, 10, -2]]
-let z = [[-5, -7.5, -5, 0, 5, 7.5, 5, 0], [8, 8, -6, -6, 4, 4, -2, -2], [-4, 3, -9, 8, -6, 5, -4, 5], [-8, 2, -3, 8, 2, 0, 8, -5]] 
+let z = [[-5, -7.5, -5, 0, 5, 7.5, 5, 0], [8, 8, -6, -6, 4, 4, -2, -2], [-4, 3, -8, 8, -6, 5, -4, 5], [-8, 2, -3, 8, 2, 0, 8, -5]] 
 let levelPicker = Math.floor(Math.random() * 4)
 for (let i = 0; i < stationaryObstacles.length; i++){
     let box = stationaryObstacles[i]
