@@ -15,6 +15,7 @@ import { createText, createLights, updateText, wait } from './text.js';
 import { createBackground } from './background.js';
 import { createPortals, getPortalBounds, checkTeleport } from './portals.js'
 import { createFireParticleSystem } from './fire.js';
+import { createDiscoLights, animateLights } from './discoLights.js';
 
 
 //TODO: need to show animation on score/collission
@@ -144,6 +145,9 @@ createText("Cup Phong").then((textMesh) => {
     gameText = textMesh;
     scene.add(textMesh);
 });
+
+// Disco lights
+createDiscoLights(scene);
 
 // Game over
 let gameOver = false;
@@ -289,6 +293,9 @@ function animate() {
             aimLine = null;
         }
     }
+
+    // Disco lights
+    animateLights(Date.now() * 0.0005);
 
     if(game_object.shot_ball == true && aimLine != null) {
         scene.remove(aimLine);
