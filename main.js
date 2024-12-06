@@ -46,8 +46,8 @@ const zAxis = createAxisLine(0x0000ff, new THREE.Vector3(0, 0, 0), new THREE.Vec
 // For development, remove later
 
 //Add background
-const bg = createBackground()
-scene.add(bg)
+const background = createBackground();
+scene.add(background);
 //Add background
 
 // Place stationary obstacles
@@ -102,7 +102,7 @@ setupEventListeners();
 // Camera event listener
 game_object.cameraInTwoD = true
 document.addEventListener('keyup', function(event) {
-    if (event.key === 'c' && game_object.shot_ball) {
+    if (event.key === 'c') {
         if(game_object.cameraInTwoD ) game_object.cameraInTwoD  = false;
         else game_object.cameraInTwoD  = true;
     }
@@ -231,7 +231,13 @@ function resetRoundWithNewObstacles(){
     return {bounds, newstationaryObstacles}
 }
 
+const clock = new THREE.Clock();
+
 function animate() {
+    const delta = clock.getDelta();
+
+    // Update background rotation
+    if (background.tick) background.tick(delta);
     if(game_object.rounds_left == 0){
         gameOver = true;
         document.getElementById('game-end-popup').classList.add('show');

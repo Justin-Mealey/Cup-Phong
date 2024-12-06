@@ -63,9 +63,9 @@
 		setInterval(() => {
 			const bottomMessage = document.getElementById('bottom-message');
 			if (!game_object.set_xy_shot) {
-				bottomMessage.textContent = "Set the power and XY-angle of the shot";
+				bottomMessage.textContent = "Set the power and XY-angle of the shot\nHit 'c' to switch perspectives!\nMust be in 2D view to aim";
 			} else if(game_object.set_xy_shot && !game_object.shot_ball){
-				bottomMessage.textContent = "Now, set the XZ-angle of the shot!";
+				bottomMessage.textContent = "Now, set the XZ-angle of the shot!\nMust be in 3D view to aim";
 			}
 			else{
 				bottomMessage.textContent = "Hit 'c' to switch perspectives!";
