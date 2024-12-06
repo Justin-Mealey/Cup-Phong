@@ -112,21 +112,21 @@ const cupOnePosition = new THREE.Vector3(GAME_BOUND_X, 0, 0);
 const cupOne = createCup(0.5, cupOnePosition);
 scene.add(cupOne);
 let cupOnePlanePosition = new THREE.Vector3(GAME_BOUND_X - 3, 0, 0);
-let cupOnePlane = createCupPlane(0.5, cupOnePlanePosition);
+let cupOnePlane = createCupPlane(0.5, cupOnePlanePosition, "left");
 scene.add(cupOnePlane);
 
-const cupTwoPosition = new THREE.Vector3(GAME_BOUND_X, 6, 0);
+const cupTwoPosition = new THREE.Vector3(GAME_BOUND_X, 10, -2);
 const cupTwo = createCup(0.5, cupTwoPosition);
 scene.add(cupTwo);
-let cupTwoPlanePosition = new THREE.Vector3(GAME_BOUND_X - 3, 6, 0);
-let cupTwoPlane = createCupPlane(0.5, cupTwoPlanePosition);
+let cupTwoPlanePosition = new THREE.Vector3(GAME_BOUND_X-3, 10, -2);
+let cupTwoPlane = createCupPlane(0.5, cupTwoPlanePosition, "left");
 scene.add(cupTwoPlane);
 
-const cupThreePosition = new THREE.Vector3(GAME_BOUND_X, -6, 0);
+const cupThreePosition = new THREE.Vector3(GAME_BOUND_X, -10, 2);
 const cupThree = createCup(0.5, cupThreePosition);
 scene.add(cupThree);
-let cupThreePlanePosition = new THREE.Vector3(GAME_BOUND_X - 3, -6, 0);
-let cupThreePlane = createCupPlane(0.5, cupThreePlanePosition);
+let cupThreePlanePosition = new THREE.Vector3(GAME_BOUND_X-3, -10, 2);
+let cupThreePlane = createCupPlane(0.5, cupThreePlanePosition, "left");
 scene.add(cupThreePlane);
 
 // Camera event listener
@@ -258,8 +258,9 @@ function animate() {
         camera.lookAt(50,0,0);
     }
     else if (!game_object.cameraInTwoD  && !game_object.shot_ball){
-        ball.material.needsUpdate = true;
-        ball.material.transparent = true; 
+        // ball.material.needsUpdate = true;
+        // ball.material.transparent = true; 
+        // ball.material.opacity = 0.3;
         let newPos = new THREE.Vector3(-3, 0, 0);
         camera.position.lerp(newPos, .08);
         camera.lookAt(1,0,0);

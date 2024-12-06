@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { rotationMatrixZ, rotationMatrixY, translationMatrix } from './math';
+import { rotationMatrixX, rotationMatrixZ, rotationMatrixY, translationMatrix } from './math';
 
 export function createCup(size, position) {
     const geometry = new THREE.CylinderGeometry( 5*size, 3*size, 10*size, 30 , 1, false); 
@@ -22,16 +22,29 @@ export function createCup(size, position) {
     return cylinder;
 }
 
-export function createCupPlane(size, position) {
+export function createCupPlane(size, position, orientation) {
     const geometry = new THREE.RingGeometry(1 * size, 5 * size, 30, 8, 0, Math.PI * 2);
     const material = new THREE.MeshBasicMaterial( {color: 0x50C878 } );
     const cupPlane = new THREE.Mesh(geometry, material);
 
     // Rotate around z axis by 90 degrees
-    cupPlane.matrixAutoUpdate = false;
-    const model_transform = new THREE.Matrix4;
-    model_transform.multiplyMatrices(rotationMatrixY(-Math.PI / 2), model_transform);
-    cupPlane.matrix.multiplyMatrices(model_transform, cupPlane.matrix);
+    if(orientation == "left") {
+        cupPlane.matrixAutoUpdate = false;
+        const model_transform = new THREE.Matrix4;
+        model_transform.multiplyMatrices(rotationMatrixY(-Math.PI / 2), model_transform);
+        cupPlane.matrix.multiplyMatrices(model_transform, cupPlane.matrix);
+    } else if(orientation == "up") {
+        cupPlane.matrixAutoUpdate = false;
+        const model_transform = new THREE.Matrix4;
+        model_transform.multiplyMatrices(rotationMatrixX(-Math.PI / 2), model_transform);
+        cupPlane.matrix.multiplyMatrices(model_transform, cupPlane.matrix);
+    } else if(orientation == "down") {
+        cupPlane.matrixAutoUpdate = false;
+        const model_transform = new THREE.Matrix4;
+        model_transform.multiplyMatrices(rotationMatrixX(Math.PI / 2), model_transform);
+        cupPlane.matrix.multiplyMatrices(model_transform, cupPlane.matrix);
+    }
+    
 
     // Translate to position
     cupPlane.matrix.multiplyMatrices(translationMatrix(position.x, position.y, position.z), cupPlane.matrix);
