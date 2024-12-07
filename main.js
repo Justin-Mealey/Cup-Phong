@@ -17,8 +17,6 @@ import { createPortals, getPortalBounds, checkTeleport } from './portals.js'
 import { createFireParticleSystem } from './fire.js';
 import { createDiscoLights, animateLights } from './discoLights.js';
 
-
-//TODO: need to show animation on score/collission
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 camera.position.set(50, 0, 40)
@@ -31,7 +29,6 @@ document.body.appendChild( renderer.domElement );
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
-// For development, remove later
 function createAxisLine(color, start, end) {
     const geometry = new THREE.BufferGeometry().setFromPoints([start, end]);
     const material = new THREE.LineBasicMaterial({ color: color });
@@ -40,10 +37,6 @@ function createAxisLine(color, start, end) {
 const xAxis = createAxisLine(0xff0000, new THREE.Vector3(0, 0, 0), new THREE.Vector3(20, 0, 0)); // Red
 const yAxis = createAxisLine(0x00ff00, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 20, 0)); // Green
 const zAxis = createAxisLine(0x0000ff, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, 20)); // Blue
-// scene.add(xAxis);
-// scene.add(yAxis);
-// scene.add(zAxis);
-// For development, remove later
 
 //Add background
 const background = createBackground();
@@ -162,7 +155,6 @@ scene.add(l3.target);
 
 scene.add(l3)
 
-
 game_text.info_text = TEXT_HAS_NOT_SHOT;
 
 // Fire particles
@@ -193,8 +185,8 @@ export function resetRound(){
     game_object.rounds_left--;
     scene.add(ball);
     game_text.info_text = TEXT_HAS_NOT_SHOT;
-    //NO NEW OBSTACLES IF RESET BUTTON HIT
 }
+
 function resetRoundWithNewObstacles(){
     scene.remove(ball);
     game_object.shot_ball = false;
@@ -245,7 +237,6 @@ function animate() {
     if(game_object.rounds_left == 0){
         gameOver = true;
         document.getElementById('game-end-popup').classList.add('show');
-        //TODO: END GAME
     }
     //MARK: CAMERA ANIMATION
     if ((game_object.shot_ball || game_object.set_xy_shot) && !game_object.cameraInTwoD){
@@ -262,9 +253,6 @@ function animate() {
         camera.lookAt(50,0,0);
     }
     else if (!game_object.cameraInTwoD  && !game_object.shot_ball){
-        // ball.material.needsUpdate = true;
-        // ball.material.transparent = true; 
-        // ball.material.opacity = 0.3;
         let newPos = new THREE.Vector3(-3, 0, 0);
         camera.position.lerp(newPos, .08);
         camera.lookAt(1,0,0);
@@ -410,20 +398,6 @@ function animate() {
             stationaryObstacles = obj.newstationaryObstacles
         }
     }
-
-
-    // if (fireParticles.particleSystem.visible) {
-    //     if (!fireVisibleStartTime) {
-    //         fireVisibleStartTime = Date.now(); // Record the start time
-    //     }
-
-    //     const elapsedTime = Date.now() - fireVisibleStartTime;
-
-    //     if (elapsedTime > 1000) { // 1000 ms = 1 second
-    //         fireParticles.particleSystem.visible = false;
-    //         fireVisibleStartTime = null; // Reset the timer
-    //     }
-    // }
     
     if (fireParticles.particleSystem.visible) {
         if (!fireVisibleStartTime) {
@@ -437,9 +411,6 @@ function animate() {
             fireVisibleStartTime = null; // Reset the timer
         }
     }
-
-
-
 
     fireParticles.animateFireParticles();
 
