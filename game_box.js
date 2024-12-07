@@ -8,7 +8,6 @@ export const planeData = [
         scale: { x: GAME_BOUND_X, y: 32, z: 1 },
         horizontal: false
     },
-
     // Right face
     {
         position: { x: 50, y: 0, z: -10 },
@@ -16,7 +15,6 @@ export const planeData = [
         scale: { x: GAME_BOUND_X, y: 32, z: 1 },
         horizontal: false
     },
-
     // Top face
     {
         position: { x: 50, y: 16, z: 0 },
@@ -24,7 +22,6 @@ export const planeData = [
         scale: { x: GAME_BOUND_X, y: 20, z: 1 },
         horizontal: true
     },
-
     // Bottom face
     {
         position: { x: 50, y: -16, z: 0 },

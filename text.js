@@ -23,11 +23,7 @@ export function createText(inputText) {
             });
     
             textGeo.computeBoundingBox();
-    
-            // const centerOffset = -0.5 * (textGeo.boundingBox.max.x - textGeo.boundingBox.min.x);
-    
-            // Create a material for the text (e.g., basic, phong, etc.)
-            // Change material to MeshPhongMaterial for better lighting effects
+
             const material = new THREE.MeshPhongMaterial({ 
                 color: 0xADD8E6,
                 specular: 0x555555,  
@@ -49,7 +45,6 @@ export function createText(inputText) {
 export function updateText(textMesh, newText) {
     return new Promise((resolve) => {
         loader.load(fontPath, function (font) {
-            // Create a new TextGeometry with the updated text
             const newTextGeo = new TextGeometry(newText, {
                 font: font,
                 size: 5,
@@ -63,11 +58,7 @@ export function updateText(textMesh, newText) {
             });
 
             newTextGeo.computeBoundingBox();
-
-            // Dispose of the old geometry
             textMesh.geometry.dispose();
-
-            // Assign the new geometry to the existing textMesh
             textMesh.geometry = newTextGeo;
 
             resolve(textMesh);
@@ -76,12 +67,9 @@ export function updateText(textMesh, newText) {
 }
 
 export function createLights() {
-    // Add lights
     const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
-    directionalLight.position.set(1, 1, 1);  // Light from top-right
-
-    // Add ambient light to soften shadows
-    const ambientLight = new THREE.AmbientLight(0x404040, 1.5);  // Soft white light
+    directionalLight.position.set(1, 1, 1);  
+    const ambientLight = new THREE.AmbientLight(0x404040, 1.5); 
 
     return { directionalLight, ambientLight };
 }

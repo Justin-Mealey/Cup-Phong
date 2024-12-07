@@ -115,12 +115,13 @@ export function setupStationaryObstacles(){
 
     const stationaryObstacles = [b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14, b15, b16]
     let include = [true, true, true, true, true, true, true, true, false, false, false, false, false, false, false, false]
-    //randomize what indeces hold true
+    
+    // Randomize which indices are "true"
     for (let i = include.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [include[i], include[j]] = [include[j], include[i]];
     }
-    //add 8 boxes to the list we actually use
+    // Add 8 boxes to the final list
     const usedStationaryObstacles = stationaryObstacles.filter((_, index) => include[index]);
 
     const cg = new THREE.BoxGeometry(30, 2, 10);

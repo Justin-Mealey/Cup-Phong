@@ -47,7 +47,8 @@ function handleMouseMove(event) {
     else{
         power = Math.min(displacement / thirdScreenHeight, 1.0);
         update_power = power;
-        if(game_object.cameraInTwoD && deltaX > 0){ //DONT ALLOW SHOOTING BACKWARDS
+        // Prevent shooting backwards
+        if(game_object.cameraInTwoD && deltaX > 0){ 
             return;
         }
     
@@ -57,16 +58,6 @@ function handleMouseMove(event) {
             directionVector = new THREE.Vector3(-deltaX / magnitude, -deltaY / magnitude, 0);
         }
     }
-
-    // // Log values for debugging
-    // console.log('Power:', power.toFixed(2));
-    // console.log('Direction Vector:', {
-    //     x: directionVector.x.toFixed(2),
-    //     y: directionVector.y.toFixed(2),
-    //     z: directionVector.z.toFixed(2),
-    //     deltaY: -deltaY / magnitude,
-    //     cameraState: game_object.cameraInTwoD
-    // });
 }
 
 
@@ -94,10 +85,3 @@ function handleMouseUp() {
         isDragging = false;
     }
 }
-
-// // Clean up function (call this when removing the functionality)
-// function cleanupEventListeners() {
-//     document.removeEventListener('mousedown', handleMouseDown);
-//     document.removeEventListener('mousemove', handleMouseMove);
-//     document.removeEventListener('mouseup', handleMouseUp);
-// }

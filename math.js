@@ -48,19 +48,15 @@ export function didCollide(ball, plane) {
 
 export function updateVelocity(ball, ballRadius, ballVelocity, plane, horizontal) {
     if (horizontal == true && ball.position.y - ballRadius <= plane.position.y) {
-        // console.log('Ball hit top');;
         ballVelocity.y = -Math.abs(ballVelocity.y); 
     }
     else if (horizontal == true && ball.position.y + ballRadius >= plane.position.y) {
-        // console.log('Ball hit bottom');
         ballVelocity.y = Math.abs(ballVelocity.y);
     }
     else if (horizontal == false && ball.position.z + ballRadius <= plane.position.z) {
-        // console.log('Ball hit right');
         ballVelocity.z = -Math.abs(ballVelocity.z);
     }
     else if (horizontal == false && ball.position.z - ballRadius >= plane.position.z) {
-        // console.log('Ball hit left');
         ballVelocity.z = Math.abs(ballVelocity.z);
     }
     return ballVelocity;
