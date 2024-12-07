@@ -3,13 +3,12 @@ import { directionVector } from './mouse';
 import { update_power } from './mouse';
 import { game_object } from './game_logic';
 
-// Create a line for the aim indicator
 let aimLine;
-const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffff00 }); // Bright yellow
+const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffff00 }); //yellow lighting
 
 export function createAimLine() {
     const startPoint = new THREE.Vector3(0, 0, 0);
-    let endPoint = new THREE.Vector3(directionVector.x, -directionVector.y, directionVector.z); // Length multiplier for visibility
+    let endPoint = new THREE.Vector3(directionVector.x, -directionVector.y, directionVector.z); 
     // For picking z-direction: 
     if(!game_object.cameraInTwoD) {
         endPoint = new THREE.Vector3(0, 0, directionVector.z);

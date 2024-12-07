@@ -11,7 +11,7 @@ const lightColors = [
 ];
 
 let lights;
-let lightRadius; // Store radius globally
+let lightRadius; 
 
 export function createDiscoLights(scene, {
     colors = lightColors,
@@ -19,26 +19,22 @@ export function createDiscoLights(scene, {
     intensity = 30.0,
     distance = 30
 } = {}) {
-    lightRadius = radius; // Save radius
+    lightRadius = radius; 
     lights = colors.map((color, index) => {
-        const light = new THREE.PointLight(color, intensity, distance);
+        const light = new THREE.PointLight(color, intensity, distance); 
         const angle = (index / colors.length) * Math.PI * 2;
         light.position.set(
             Math.cos(angle) * radius * 5 + 40,
             Math.cos(angle) * radius / 5 + 35,
             Math.sin(angle) + 3
         );
-        // light.position.set(
-        //     light.position.x + 10,
-        //     light.position.y + 20,
-        //     light.position.z
-        // );
         scene.add(light);
-        return light; // Ensure lights are returned
+        return light; 
     });
 }
 
-export function animateLights(time) {
+//disco effect, lights move around title
+export function animateLights(time) { 
     lights.forEach((light, index) => {
         const angle = time + (index / lights.length) * Math.PI * 2;
         light.position.x = Math.cos(angle) * lightRadius * 5 + 30;

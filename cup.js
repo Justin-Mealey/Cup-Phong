@@ -4,9 +4,9 @@ import { rotationMatrixX, rotationMatrixZ, rotationMatrixY, translationMatrix } 
 export function createCup(size, position) {
     const geometry = new THREE.CylinderGeometry( 5*size, 3*size, 10*size, 30 , 1, false); 
     const material = new THREE.MeshPhongMaterial({
-        color: 0xffff00,  // Yellow color
-        specular: 0xffffff, // Specular highlights
-        shininess: 90     // Controls the intensity of specular reflection
+        color: 0xffff00,  
+        specular: 0xffffff, 
+        shininess: 90     
       });
     const cylinder = new THREE.Mesh( geometry, material ); 
     
