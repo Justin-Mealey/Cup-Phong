@@ -366,9 +366,9 @@ function animate() {
             }
         });
         if (!gameOver) {
-            let hitFirstCup = ball.position.x - ballRadius > cupOnePlanePosition.x && ball.position.y - ballRadius > cupOnePlanePosition.y - 3 && ball.position.y + ballRadius < cupOnePlanePosition.y + 3;
-            let hitSecondCup = ball.position.x - ballRadius > cupTwoPlanePosition.x && ball.position.y - ballRadius > cupTwoPlanePosition.y - 3 && ball.position.y + ballRadius < cupTwoPlanePosition.y + 3;
-            let hitThirdCup = ball.position.x - ballRadius > cupThreePlanePosition.x && ball.position.y - ballRadius > cupThreePlanePosition.y - 3 && ball.position.y + ballRadius < cupThreePlanePosition.y + 3;
+            let hitFirstCup = ball.position.x - ballRadius > cupOnePlanePosition.x && ball.position.y - ballRadius > cupOnePlanePosition.y - 3 && ball.position.y + ballRadius < cupOnePlanePosition.y + 3 && ball.position.z + ballRadius > cupOnePlanePosition.z - 3 && ball.position.z + ballRadius < cupOnePlanePosition.z + 3;
+            let hitSecondCup = ball.position.x - ballRadius > cupTwoPlanePosition.x && ball.position.y - ballRadius > cupTwoPlanePosition.y - 3 && ball.position.y + ballRadius < cupTwoPlanePosition.y + 3 && ball.position.z + ballRadius > cupTwoPlanePosition.z - 3 && ball.position.z + ballRadius < cupTwoPlanePosition.z + 3;
+            let hitThirdCup = ball.position.x - ballRadius > cupThreePlanePosition.x && ball.position.y - ballRadius > cupThreePlanePosition.y - 3 && ball.position.y + ballRadius < cupThreePlanePosition.y + 3 && ball.position.z + ballRadius > cupThreePlanePosition.z - 3 && ball.position.z + ballRadius < cupThreePlanePosition.z + 3;
             if(hitFirstCup || hitSecondCup || hitThirdCup) {
                 if(hitFirstCup) {
                     fireParticles.particleSystem.position.y = 0;
