@@ -2,9 +2,8 @@ import * as THREE from 'three';
 
 export function createBackground() {
     const loader = new THREE.TextureLoader();
-    const texture = loader.load('./bg/spacebackground.jpg'); // Single texture for simplicity
+    const texture = loader.load('./bg/spacebackground.jpg');
 
-    // Set texture wrapping and filtering
     texture.wrapS = THREE.RepeatWrapping;
     texture.wrapT = THREE.RepeatWrapping;
     texture.minFilter = THREE.LinearMipmapLinearFilter;
@@ -15,7 +14,6 @@ export function createBackground() {
         animation_time: { value: 0.0 }
     };
 
-    // Define vertex shader
     const vertexShader = `
         varying vec2 vUv;
         void main() {
@@ -24,7 +22,6 @@ export function createBackground() {
         }
     `;
 
-    // Define fragment shader (rotating texture logic)
     const fragmentShader = `
         uniform sampler2D uTexture;
         uniform float animation_time;
@@ -46,18 +43,16 @@ export function createBackground() {
         }
     `;
 
-    // Create a ShaderMaterial for the box
     const material = new THREE.ShaderMaterial({
         uniforms: animationUniforms,
         vertexShader: vertexShader,
         fragmentShader: fragmentShader,
-        side: THREE.BackSide // Texture applied on the inner sides of the cube
+        side: THREE.BackSide // Texture applied on the inner sides of the cube, because game is inside
     });
 
-    // Create box geometry
-    const geometry = new THREE.BoxGeometry(256, 256, 256); // Adjust size as needed
+    const geometry = new THREE.BoxGeometry(256, 256, 256); // Big enough to surround game
     const cube = new THREE.Mesh(geometry, material);
-    // Update animation_time in a render loop
+    // Rotate as a function of time
     cube.tick = (delta) => {
         animationUniforms.animation_time.value += delta;
     };
